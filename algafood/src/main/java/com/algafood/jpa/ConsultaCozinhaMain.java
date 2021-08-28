@@ -7,7 +7,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.algafood.AlgafoodApplication;
-import com.algafood.domain.model.Cozinha;
 
 public class ConsultaCozinhaMain {
 
