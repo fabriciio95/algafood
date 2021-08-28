@@ -6,23 +6,21 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
-public class InclusaoCozinhaMain {
+public class AlteracaoCozinhaMain {
 
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = new SpringApplicationBuilder(InclusaoCozinhaMain.class).web(WebApplicationType.NONE)
+		ApplicationContext applicationContext = new SpringApplicationBuilder(AlteracaoCozinhaMain.class).web(WebApplicationType.NONE)
 					.run(args);
 		
 		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
 		
+		cadastroCozinha.listar().forEach(System.out::println);
+		
 		Cozinha cozinha1 = new Cozinha();
+		cozinha1.setId(1L);
 		cozinha1.setNome("Brasileira");
-		
-		Cozinha cozinha2 = new Cozinha();
-		cozinha2.setNome("Japonesa");
-		
 		cadastroCozinha.salvar(cozinha1);
-		cadastroCozinha.salvar(cozinha2);
 		
-		cadastroCozinha.listar().forEach(System.out::println);;
+		cadastroCozinha.listar().forEach(System.out::println);
 	}
 }
