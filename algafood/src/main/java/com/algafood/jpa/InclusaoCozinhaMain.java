@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
+import com.algafood.domain.repository.CozinhaRepository;
+
 @SpringBootApplication
 public class InclusaoCozinhaMain {
 
@@ -12,7 +14,7 @@ public class InclusaoCozinhaMain {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(InclusaoCozinhaMain.class).web(WebApplicationType.NONE)
 					.run(args);
 		
-		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 		
 		Cozinha cozinha1 = new Cozinha();
 		cozinha1.setNome("Brasileira");
@@ -20,9 +22,9 @@ public class InclusaoCozinhaMain {
 		Cozinha cozinha2 = new Cozinha();
 		cozinha2.setNome("Japonesa");
 		
-		cadastroCozinha.salvar(cozinha1);
-		cadastroCozinha.salvar(cozinha2);
+		cozinhaRepository.salvar(cozinha1);
+		cozinhaRepository.salvar(cozinha2);
 		
-		cadastroCozinha.listar().forEach(System.out::println);;
+		cozinhaRepository.listar().forEach(System.out::println);;
 	}
 }

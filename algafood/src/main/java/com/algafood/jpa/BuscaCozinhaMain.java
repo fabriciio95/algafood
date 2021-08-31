@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
+import com.algafood.domain.repository.CozinhaRepository;
+
 @SpringBootApplication
 public class BuscaCozinhaMain {
 
@@ -12,9 +14,9 @@ public class BuscaCozinhaMain {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(BuscaCozinhaMain.class).web(WebApplicationType.NONE)
 				.run(args);
 		
-		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 		
-		System.out.println(cadastroCozinha.buscar(2L));
+		System.out.println(cozinhaRepository.buscar(2L));
 		
 	}
 }
