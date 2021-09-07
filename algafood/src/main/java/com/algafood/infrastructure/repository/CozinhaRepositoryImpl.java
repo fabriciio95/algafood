@@ -9,8 +9,9 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.repository.CozinhaRepository;
-import com.algafood.jpa.Cozinha;
+
 
 @Component
 public class CozinhaRepositoryImpl implements CozinhaRepository {

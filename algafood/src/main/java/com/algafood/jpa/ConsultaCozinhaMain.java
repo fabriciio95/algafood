@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.algafood.AlgafoodApplication;
 import com.algafood.domain.repository.CozinhaRepository;
+import com.algafood.domain.model.Cozinha;
 
 public class ConsultaCozinhaMain {
 

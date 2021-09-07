@@ -2,7 +2,9 @@ package com.algafood.domain.repository;
 
 import java.util.List;
 
-import com.algafood.jpa.Cozinha;
+import com.algafood.domain.model.Cozinha;
+
+
 
 public interface CozinhaRepository {
 

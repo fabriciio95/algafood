@@ -4,6 +4,7 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
+import com.algafood.domain.model.Cozinha;
 
 import com.algafood.domain.repository.CozinhaRepository;
 
