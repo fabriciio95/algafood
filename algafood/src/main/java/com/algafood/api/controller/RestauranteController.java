@@ -1,6 +1,7 @@
 package com.algafood.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -79,6 +81,30 @@ public class RestauranteController {
 		} catch(EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+	}
+	
+	@PatchMapping("/{id}")
+	public ResponseEntity<?> atualizarParcial(@RequestBody Map<String, Object> campos, @PathVariable Long id) {
+		
+		Restaurante restauranteAtual = restauranteRepository.buscar(id);
+		
+		if(restauranteAtual == null) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		merge(campos, restauranteAtual);
+		
+		
+		
+		return atualizar(restauranteAtual, id);
+	}
+
+	private void merge(Map<String, Object> camposOrigem, Restaurante restauranteDestino) {
+		camposOrigem.forEach((campo, valor) -> {
+			if(campo.equalsIgnoreCase("nome")) {
+				restauranteDestino.setNome((String) valor);
+			}
+		});
 	}
 	
 	@DeleteMapping("/{id}")
