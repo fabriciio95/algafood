@@ -2,7 +2,9 @@ package com.algafood.domain.repository;
 
 import java.util.List;
 
-import com.algafood.jpa.Cozinha;
+import com.algafood.domain.model.Cozinha;
+
+
 
 public interface CozinhaRepository {
 
@@ -12,6 +14,6 @@ public interface CozinhaRepository {
 	
 	Cozinha salvar(Cozinha cozinha);    
 	
-	void remover(Cozinha cozinha);
+	void remover(Long id);
 	
 }
