@@ -7,14 +7,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.repository.CozinhaRepository;
 
 
-@Component
+@Repository
 public class CozinhaRepositoryImpl implements CozinhaRepository {
 	
 	@PersistenceContext
@@ -24,6 +24,13 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 	public List<Cozinha> listar() {
 		TypedQuery<Cozinha> cozinhas =  entityManager.createQuery("from Cozinha", Cozinha.class);
 		return cozinhas.getResultList();
+	}
+	
+	@Override
+	public List<Cozinha> consultarPorNome(String nome) {
+		return entityManager.createQuery("from Cozinha where nome like :nome", Cozinha.class)
+					.setParameter("nome", "%" + nome + "%")
+					.getResultList();
 	}
 
 	@Override
