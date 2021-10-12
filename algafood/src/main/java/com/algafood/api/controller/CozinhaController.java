@@ -22,8 +22,6 @@ import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.repository.CozinhaRepository;
 import com.algafood.domain.service.CadastroCozinhaService;
 
-//@Controller
-//@ResponseBody
 @RestController
 @RequestMapping(value = "/cozinhas")
 public class CozinhaController {
@@ -38,21 +36,7 @@ public class CozinhaController {
 	public List<Cozinha> listar() {
 		return cozinhaRepository.listar();
 	}
-		
-//	//@ResponseStatus(HttpStatus.CREATED)
-//	@GetMapping("/{id}")
-//	public ResponseEntity<Cozinha> buscar(@PathVariable("id") Long id) {
-//		Cozinha cozinha =  cozinhaRepository.buscar(id);
-//		
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.add(HttpHeaders.LOCATION, "http://localhost:8080/cozinhas");
-//		
-//		return ResponseEntity
-//				.status(HttpStatus.FOUND)
-//				.header("u1", "uiui")
-//				.headers(headers)
-//				.build();
-//	}
+	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
@@ -75,7 +59,6 @@ public class CozinhaController {
 	public ResponseEntity<Cozinha> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
 		Cozinha cozinhaAtual = cozinhaRepository.buscar(id);
 		if (cozinhaAtual != null) {
-			// cozinhaAtual.setNome(cozinha.getNome());
 			BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 			cozinhaAtual = cadastroCozinha.salvar(cozinhaAtual);
 			return ResponseEntity.ok(cozinhaAtual);
