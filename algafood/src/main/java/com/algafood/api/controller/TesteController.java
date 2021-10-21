@@ -12,6 +12,8 @@ import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.CozinhaRepository;
 import com.algafood.domain.repository.RestauranteRepository;
+import com.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
+import com.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 
 import lombok.AllArgsConstructor;
 
@@ -70,7 +72,7 @@ public class TesteController {
 	}
 	
 	@GetMapping("/restaurantes/com-frete-gratis")
-	public int restaurantesCountPorCozinha(String nome) {
+	public List<Restaurante> restaurantesCountPorCozinha(String nome) {
 		var comFreteGratis = new RestauranteComFreteGratisSpec();
 		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 		
