@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.server.ServerWebInputException;
 
-import com.algafood.domain.exception.EntidadeEmUsoException;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.repository.CozinhaRepository;
@@ -90,13 +88,13 @@ public class CozinhaController {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void atualizar(@PathVariable Long id) {		
-		try {
+//		try {
 			
 			cadastroCozinha.excluir(id);
 	
-		} catch(EntidadeNaoEncontradaException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//			throw new ServerWebInputException(e.getMessage());
-		} 
+//		} catch(EntidadeNaoEncontradaException e) {
+//			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+////			throw new ServerWebInputException(e.getMessage());
+//		} 
 	}
 }
