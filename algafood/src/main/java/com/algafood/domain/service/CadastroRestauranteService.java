@@ -14,9 +14,9 @@ import com.algafood.domain.repository.RestauranteRepository;
 @Service
 public class CadastroRestauranteService {
 
-	private static final String MSG_ENTIDADE_EM_USO = "Restaurante de código %d não pode ser removida, pois está em uso";
+	private static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removida, pois está em uso";
 
-	private static final String MSG_ENTIDADE_NAO_ENCONTRADA = "Não existe um cadastro de restaurante com código %d";
+	private static final String MSG_RESTAURANTE_NAO_ENCONTRADA = "Não existe um cadastro de restaurante com código %d";
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -42,17 +42,17 @@ public class CadastroRestauranteService {
 			
 		} catch(EmptyResultDataAccessException e) {
 		    throw new EntidadeNaoEncontradaException(String
-		    			.format(MSG_ENTIDADE_NAO_ENCONTRADA, restauranteId));
+		    			.format(MSG_RESTAURANTE_NAO_ENCONTRADA, restauranteId));
 		} catch(DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(String
-						.format(MSG_ENTIDADE_EM_USO, restauranteId));
+						.format(MSG_RESTAURANTE_EM_USO, restauranteId));
 		}
 	}
 	
 	
 	public Restaurante buscarOuFalhar(Long restauranteId) {
 		return restauranteRepository.findById(restauranteId)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_ENTIDADE_NAO_ENCONTRADA, restauranteId)));
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADA, restauranteId)));
 	}
 }
 

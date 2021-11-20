@@ -13,7 +13,7 @@ import com.algafood.domain.repository.EstadoRepository;
 @Service
 public class CadastroEstadoService {
 
-	private static final String MSG_ENTIDADE_EM_USO = "Estado de código %d não pode ser excluído pois está em uso";
+	private static final String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser excluído pois está em uso";
 	private static final String MSG_ESTADO_NAO_ENCONTRADO = "Não existe um cadastro de estado com o código %d";
 	@Autowired
 	private EstadoRepository estadoRepository;
@@ -33,7 +33,7 @@ public class CadastroEstadoService {
 			
 		} catch (DataIntegrityViolationException e) {
 			
-			throw new EntidadeEmUsoException(String.format(MSG_ENTIDADE_EM_USO, id));
+			throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, id));
 			
 		}
 	}
