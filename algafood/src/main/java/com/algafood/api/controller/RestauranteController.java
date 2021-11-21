@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.RestauranteRepository;
@@ -53,7 +53,7 @@ public class RestauranteController {
 
 			return cadastroRestaurante.salvar(restaurante);
 			
-		} catch(EntidadeNaoEncontradaException e) {
+		} catch(CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
@@ -70,7 +70,7 @@ public class RestauranteController {
 
 			return cadastroRestaurante.salvar(restauranteAtual);
 			
-		} catch(EntidadeNaoEncontradaException e) {
+		} catch(CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
