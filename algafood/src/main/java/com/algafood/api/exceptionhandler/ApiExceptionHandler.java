@@ -1,5 +1,6 @@
 package com.algafood.api.exceptionhandler;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -15,7 +16,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.algafood.domain.exception.EntidadeEmUsoException;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.exception.NegocioException;
+import com.fasterxml.jackson.databind.JsonMappingException.Reference;
+import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -27,6 +32,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		if(rootCause instanceof InvalidFormatException) {
 			return handleInvalidFormatException((InvalidFormatException) rootCause, headers, status, request);
+		} else if(rootCause instanceof PropertyBindingException) {
+			return handlePropertyBindingException((PropertyBindingException) rootCause,headers, status, request);
 		}
 		
 		
@@ -38,12 +45,30 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, problem, headers, status, request);
 	}
 
+	private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException rootCause,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		
+		String detail = "O corpo da requisição está inválido.";
+		
+		String path = joinPath(rootCause.getPath());
+		
+		if(rootCause instanceof UnrecognizedPropertyException) {
+			detail = String.format("A propriedade '%s' não existe no tipo %s. "
+					+ "Corrija ou remova essa propriedade e tente novamente", path, rootCause.getReferringClass().getSimpleName());
+		} else if(rootCause instanceof IgnoredPropertyException) {
+			detail = String.format("Não é necessário a propriedade '%s', pois está marcada como ignorada." , path);
+		}
+		
+		ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
+		
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		return handleExceptionInternal(rootCause, problem, headers, status, request);
+	}
+
 	private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
-		String path = ex.getPath().stream()
-				.map(ref -> ref.getFieldName())
-				.collect(Collectors.joining("."));
+		String path = joinPath(ex.getPath());
 		
 		ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
 		String detail = String.format("A propriedade '%s' recebeu o valor '%s', "
@@ -134,6 +159,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				.detail(detail);
 	}
 	
+	private String joinPath(List<Reference> references) {
+		return references.stream()
+				.map(ref -> ref.getFieldName())
+				.collect(Collectors.joining("."));
+	}
 	
 //	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
 //	public ResponseEntity<?> tratarHttpMediaTypeNotSupportedException() {
