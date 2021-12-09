@@ -48,16 +48,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException rootCause,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
-		String detail = "O corpo da requisição está inválido.";
-		
 		String path = joinPath(rootCause.getPath());
 		
-		if(rootCause instanceof UnrecognizedPropertyException) {
-			detail = String.format("A propriedade '%s' não existe no tipo %s. "
+		
+		String detail = String.format("A propriedade '%s' não existe no tipo %s. "
 					+ "Corrija ou remova essa propriedade e tente novamente", path, rootCause.getReferringClass().getSimpleName());
-		} else if(rootCause instanceof IgnoredPropertyException) {
-			detail = String.format("Não é necessário a propriedade '%s', pois está marcada como ignorada." , path);
-		}
 		
 		ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
 		
