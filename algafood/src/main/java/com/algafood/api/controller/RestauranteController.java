@@ -48,9 +48,9 @@ public class RestauranteController {
 		return restauranteRepository.findAll();
 	}
 
-	@GetMapping("/{id}")
-	public Restaurante buscar(@PathVariable Long id) {
-		return cadastroRestaurante.buscarOuFalhar(id);
+	@GetMapping("/{restauranteId}")
+	public Restaurante buscar(@PathVariable Long restauranteId) {
+		return cadastroRestaurante.buscarOuFalhar(restauranteId);
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
@@ -65,10 +65,10 @@ public class RestauranteController {
 		}
 	}
 
-	@PutMapping("/{id}")
-	public Restaurante atualizar(@RequestBody Restaurante restaurante, @PathVariable Long id) {
+	@PutMapping("/{restauranteId}")
+	public Restaurante atualizar(@RequestBody Restaurante restaurante, @PathVariable Long restauranteId) {
 
-		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
+		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro",
 				"produtos");
@@ -82,14 +82,15 @@ public class RestauranteController {
 		}
 	}
 
-	@PatchMapping("/{id}")
-	public Restaurante atualizarParcial(@RequestBody Map<String, Object> campos, @PathVariable Long id, HttpServletRequest request) {
+	@PatchMapping("/{restauranteId}")
+	public Restaurante atualizarParcial(@RequestBody Map<String, Object> campos, @PathVariable Long restauranteId,
+			HttpServletRequest request) {
 
-		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
+		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
 		merge(campos, restauranteAtual, request);
 
-		return atualizar(restauranteAtual, id);
+		return atualizar(restauranteAtual, restauranteId);
 	}
 
 	private void merge(Map<String, Object> camposOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
@@ -116,8 +117,8 @@ public class RestauranteController {
 	}
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/{id}")
-	public void excluir(@PathVariable Long id) {
-		cadastroRestaurante.excluir(id);
+	@DeleteMapping("/{restauranteId}")
+	public void excluir(@PathVariable Long restauranteId) {
+		cadastroRestaurante.excluir(restauranteId);
 	}
 }
