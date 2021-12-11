@@ -1,5 +1,6 @@
 package com.algafood.api.exceptionhandler;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 		
-		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail).build();
 		
 		ex.printStackTrace();
 		
@@ -56,7 +58,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		String detail = String.format("O recurso '%s', que você tentou acessar, é inexistente.", ex.getRequestURL());
 		
-		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL).build();
 		
 		return handleExceptionInternal(ex, problem, headers, status, request);
 	}
@@ -88,7 +91,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
 		String detail = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
 		
-		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL).build();
 		
 		return handleExceptionInternal(ex, problem, headers, status, request);
 	}
@@ -102,7 +106,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
 		String detail = ex.getMessage();
 		
-		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail).build();
 		
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 //		Problema problema = Problema.builder()
@@ -138,7 +143,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		ProblemType problemType = ProblemType.ERRO_NEGOCIO;
 		String detail = ex.getMessage();
 		
-		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail).build();
 		
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 		
@@ -157,11 +163,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		if(body == null) {
 			body = Problem.builder()
 					.status(status.value())
-					.title(status.getReasonPhrase()).build();
+					.title(status.getReasonPhrase())
+					.timestamp(LocalDateTime.now())
+					.userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL).build();
 		} else if (body instanceof String) {
 			body = Problem.builder()
 					.status(status.value())
-					.title((String) body).build();
+					.title((String) body)
+					.timestamp(LocalDateTime.now())
+					.userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL).build();
 		}
 		
 		return super.handleExceptionInternal(ex, body, headers, status, request);
@@ -210,7 +220,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				+ " Corrija e informe um valor compátivel com o tipo %s", ex.getName(), ex.getValue(),
 				ex.getRequiredType().getSimpleName());
 		
-		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL).build();
 		
 		return handleExceptionInternal(ex, problem, headers, status, request);
 	}
@@ -221,7 +232,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				.status(status.value())
 				.type(problemType.getUri())
 				.title(problemType.getTitle())
-				.detail(detail);
+				.detail(detail)
+				.timestamp(LocalDateTime.now());
 	}
 	
 	private String joinPath(List<Reference> references) {
