@@ -54,34 +54,6 @@ public class CozinhaController {
 		return cadastroCozinha.salvar(cozinhaAtual);
 	}
 
-//	@DeleteMapping("/{id}")
-//	public ResponseEntity<?> atualizar(@PathVariable Long id) {
-//		try {
-//			
-//			cadastroCozinha.excluir(id);
-//			
-//			return ResponseEntity.noContent().build();
-//	
-////		} catch(EntidadeNaoEncontradaException e) {
-////			return ResponseEntity.notFound().build();
-////			
-//		} catch(EntidadeEmUsoException e) {
-//			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-//		}
-//	}
-
-//	@DeleteMapping("/{id}")
-//	@ResponseStatus(HttpStatus.NO_CONTENT)
-//	public void atualizar(@PathVariable Long id) {		
-////		try {
-//			
-//			cadastroCozinha.excluir(id);
-//	
-////		} catch(EntidadeNaoEncontradaException e) {
-////			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//////			throw new ServerWebInputException(e.getMessage());
-////		} 
-//	}
 
 	@DeleteMapping("/{cozinhaId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

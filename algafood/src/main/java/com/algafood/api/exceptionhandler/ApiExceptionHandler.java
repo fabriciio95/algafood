@@ -110,12 +110,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				.userMessage(detail).build();
 		
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
-//		Problema problema = Problema.builder()
-//				.dataHora(LocalDateTime.now())
-//				.mensagem(ex.getMessage()).build();
-//		
-//		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//				.body(problema);
 	}
 	
 	@ExceptionHandler(EntidadeEmUsoException.class)
@@ -128,11 +122,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				.userMessage(detail).build();
 		
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), HttpStatus.CONFLICT, request);
-//		Problema problema = Problema.builder()
-//				.dataHora(LocalDateTime.now())
-//				.mensagem(e.getMessage()).build();
-//		
-//		return ResponseEntity.status(HttpStatus.CONFLICT).body(problema);
 	}
 	
 	@ExceptionHandler(NegocioException.class)
@@ -148,12 +137,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 		
-//		Problema problema = Problema.builder()
-//				.dataHora(LocalDateTime.now())
-//				.mensagem(e.getMessage()).build();
-//		
-//		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//				.body(problema);
 	}
 	
 	@Override
@@ -241,13 +224,4 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				.map(ref -> ref.getFieldName())
 				.collect(Collectors.joining("."));
 	}
-	
-//	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-//	public ResponseEntity<?> tratarHttpMediaTypeNotSupportedException() {
-//		Problema problema = Problema.builder()
-//				.dataHora(LocalDateTime.now())
-//				.mensagem("O tipo de mídia não é aceito").build();
-//		
-//		return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(problema);
-//	}
 }
