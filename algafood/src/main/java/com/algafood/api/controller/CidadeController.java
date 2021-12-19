@@ -2,6 +2,8 @@ package com.algafood.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,7 +45,7 @@ public class CidadeController {
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public Cidade adicionar(@RequestBody Cidade cidade) {
+	public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
 		try {
 			
 			return cadastroCidade.salvar(cidade);
@@ -54,7 +56,7 @@ public class CidadeController {
 	}
 
 	@PutMapping("/{cidadeId}")
-	public Cidade atualizar(@RequestBody Cidade cidade, @PathVariable Long cidadeId) {
+	public Cidade atualizar(@RequestBody @Valid Cidade cidade, @PathVariable Long cidadeId) {
 		Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
 
 		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
