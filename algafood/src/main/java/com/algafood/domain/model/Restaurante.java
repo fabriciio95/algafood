@@ -49,7 +49,7 @@ public class Restaurante {
 	
 	//@DecimalMin("0")
 	@PositiveOrZero//(groups = Groups.CadastroRestaurante.class)
-	@NotNull(message = "Taxa frete é obrigatório")
+	@NotNull//(message = "Taxa frete é obrigatório")
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 	
