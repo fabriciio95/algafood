@@ -26,7 +26,7 @@ import javax.validation.groups.Default;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.algafood.Groups;
+import com.algafood.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -48,8 +48,8 @@ public class Restaurante {
 	private String nome;
 	
 	//@DecimalMin("0")
-	@PositiveOrZero(message = "{TaxaFrete.invalida}")//(groups = Groups.CadastroRestaurante.class)
-	@NotNull//(message = "{TaxaFrete.invalida}")
+	@PositiveOrZero//(message = "{TaxaFrete.invalida}")//(groups = Groups.CadastroRestaurante.class)
+	@NotNull
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 	
