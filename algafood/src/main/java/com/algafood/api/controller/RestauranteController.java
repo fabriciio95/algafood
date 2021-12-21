@@ -62,7 +62,7 @@ public class RestauranteController {
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public Restaurante adicionar(@RequestBody @Valid /*ated(Groups.CadastroRestaurante.class)*/ Restaurante restaurante) {
+	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
 		try {
 
 			return cadastroRestaurante.salvar(restaurante);

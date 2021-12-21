@@ -27,7 +27,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.algafood.core.validation.Groups;
-import com.algafood.core.validation.Multiplo;
 import com.algafood.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -45,22 +44,20 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	//@NotEmpty
-	@NotBlank//(groups = Groups.CadastroRestaurante.class)
+	
+	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 	
-	//@DecimalMin("0")
-	@PositiveOrZero//(message = "{TaxaFrete.invalida}")//(groups = Groups.CadastroRestaurante.class)
-	//@TaxaFrete
-	@Multiplo(numero = 5)
+	
+	@PositiveOrZero
 	@NotNull
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 	
 	@Valid
 	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
-	@NotNull//(groups = Groups.CadastroRestaurante.class)
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;

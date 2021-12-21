@@ -199,7 +199,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 						
 						return Problem.Object.builder()
 						.name(name)
-						//.userMessage(fieldError.getDefaultMessage())
 						.userMessage(message)
 						.build();
 				})
