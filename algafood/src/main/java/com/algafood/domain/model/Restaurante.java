@@ -28,12 +28,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.algafood.core.validation.Groups;
 import com.algafood.core.validation.Multiplo;
-import com.algafood.core.validation.TaxaFrete;
+import com.algafood.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria= "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
