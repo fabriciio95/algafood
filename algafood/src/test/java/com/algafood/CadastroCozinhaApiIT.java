@@ -1,6 +1,7 @@
 package com.algafood;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 
@@ -79,6 +80,28 @@ public class CadastroCozinhaApiIT {
 			.post()
 		.then()
 			.statusCode(HttpStatus.CREATED.value());
+	}
+	
+	
+	public void deveriaRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
+		given()
+			.pathParam("cozinhaId", "2")
+			.accept(ContentType.JSON)
+		.when()
+			.get("/{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.OK.value())
+			.body("nome", equalTo("Americana"));
+	}
+	
+	public void deveriaRetornarStatus404_QuandoConsultarCozinhaExistente() {
+		given()
+			.pathParam("cozinhaId", "100")
+			.accept(ContentType.JSON)
+		.when()
+			.get("/{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.NOT_FOUND.value());
 	}
 	
 	private void prepararDados() {
