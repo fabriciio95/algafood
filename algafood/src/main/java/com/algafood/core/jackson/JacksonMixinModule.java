@@ -2,7 +2,11 @@ package com.algafood.core.jackson;
 
 import org.springframework.stereotype.Component;
 
+import com.algafood.api.model.mixin.CidadeMixin;
+import com.algafood.api.model.mixin.CozinhaMixin;
 import com.algafood.api.model.mixin.RestauranteMixin;
+import com.algafood.domain.model.Cidade;
+import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.model.Restaurante;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
@@ -12,6 +16,8 @@ public class JacksonMixinModule extends SimpleModule {
 
 	public JacksonMixinModule() {
 		setMixInAnnotation(Restaurante.class, RestauranteMixin.class);
+		setMixInAnnotation(Cidade.class, CidadeMixin.class);
+		setMixInAnnotation(Cozinha.class, CozinhaMixin.class);
 	}
 	
 }
