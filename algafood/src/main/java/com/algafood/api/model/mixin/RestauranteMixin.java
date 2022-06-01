@@ -1,6 +1,6 @@
 package com.algafood.api.model.mixin;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import com.algafood.domain.model.Cozinha;
@@ -22,10 +22,10 @@ public abstract class RestauranteMixin {
 	private List<Produto> produtos;
 	
 	@JsonIgnore
-	private LocalDateTime dataCadastro;
+	private OffsetDateTime dataCadastro;
 	
 	@JsonIgnore
-	private LocalDateTime dataAtualizacao;
+	private OffsetDateTime dataAtualizacao;
 	
 	@JsonIgnore
 	private List<FormaPagamento> formasPagamento;
