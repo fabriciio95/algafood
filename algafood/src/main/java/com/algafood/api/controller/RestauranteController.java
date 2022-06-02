@@ -3,7 +3,6 @@ package com.algafood.api.controller;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -29,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algafood.api.assembler.RestauranteDTOAssembler;
 import com.algafood.api.model.RestauranteDTO;
 import com.algafood.api.model.input.RestauranteInputDTO;
 import com.algafood.core.validation.ValidacaoException;
@@ -52,17 +52,20 @@ public class RestauranteController {
 	
 	@Autowired
 	private SmartValidator validator;
+	
+	@Autowired
+	private RestauranteDTOAssembler restauranteDTOAssembler;
 
 	@GetMapping
 	public List<RestauranteDTO> listar() {
-		return restauranteRepository.findAll().stream().map(RestauranteDTO::new).collect(Collectors.toList());
+		return restauranteDTOAssembler.toListDTO(restauranteRepository.findAll());
 	}
 
 	@GetMapping("/{restauranteId}")
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
 	   Restaurante restaurante =  cadastroRestaurante.buscarOuFalhar(restauranteId);
 	   	     
-	   return new RestauranteDTO(restaurante);
+	   return restauranteDTOAssembler.toDTO(restaurante);
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
@@ -70,7 +73,7 @@ public class RestauranteController {
 	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO) {
 		try {
 
-			return new RestauranteDTO(cadastroRestaurante.salvar(restauranteInputDTO.toModel()));
+			return restauranteDTOAssembler.toDTO(cadastroRestaurante.salvar(restauranteInputDTO.toModel()));
 
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -88,7 +91,7 @@ public class RestauranteController {
 
 		try {
 
-			return new RestauranteDTO(cadastroRestaurante.salvar(restauranteAtual));
+			return restauranteDTOAssembler.toDTO(cadastroRestaurante.salvar(restauranteAtual));
 
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
