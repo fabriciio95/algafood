@@ -3,6 +3,7 @@ package com.algafood.api.controller;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -52,25 +53,23 @@ public class RestauranteController {
 	private SmartValidator validator;
 
 	@GetMapping
-	public List<Restaurante> listar() {
-		return restauranteRepository.findAll();
+	public List<RestauranteDTO> listar() {
+		return restauranteRepository.findAll().stream().map(RestauranteDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("/{restauranteId}")
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
 	   Restaurante restaurante =  cadastroRestaurante.buscarOuFalhar(restauranteId);
-	   
-	   RestauranteDTO restauranteDTO = null;
-	   
-	   return restauranteDTO;
+	   	     
+	   return new RestauranteDTO(restaurante);
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteDTO adicionar(@RequestBody @Valid Restaurante restaurante) {
 		try {
 
-			return cadastroRestaurante.salvar(restaurante);
+			return new RestauranteDTO(cadastroRestaurante.salvar(restaurante));
 
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -78,7 +77,7 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public Restaurante atualizar(@RequestBody @Valid Restaurante restaurante, @PathVariable Long restauranteId) {
+	public RestauranteDTO atualizar(@RequestBody @Valid Restaurante restaurante, @PathVariable Long restauranteId) {
 
 		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
@@ -87,7 +86,7 @@ public class RestauranteController {
 
 		try {
 
-			return cadastroRestaurante.salvar(restauranteAtual);
+			return new RestauranteDTO(cadastroRestaurante.salvar(restauranteAtual));
 
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -95,7 +94,7 @@ public class RestauranteController {
 	}
 
 	@PatchMapping("/{restauranteId}")
-	public Restaurante atualizarParcial(@RequestBody Map<String, Object> campos, @PathVariable Long restauranteId,
+	public RestauranteDTO atualizarParcial(@RequestBody Map<String, Object> campos, @PathVariable Long restauranteId,
 			HttpServletRequest request) {
 
 		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
