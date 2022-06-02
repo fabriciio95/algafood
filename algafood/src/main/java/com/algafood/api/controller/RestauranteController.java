@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.api.model.RestauranteDTO;
+import com.algafood.api.model.input.RestauranteInputDTO;
 import com.algafood.core.validation.ValidacaoException;
 import com.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algafood.domain.exception.NegocioException;
@@ -66,10 +67,10 @@ public class RestauranteController {
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public RestauranteDTO adicionar(@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO) {
 		try {
 
-			return new RestauranteDTO(cadastroRestaurante.salvar(restaurante));
+			return new RestauranteDTO(cadastroRestaurante.salvar(restauranteInputDTO.toModel()));
 
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -77,11 +78,12 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public RestauranteDTO atualizar(@RequestBody @Valid Restaurante restaurante, @PathVariable Long restauranteId) {
+	public RestauranteDTO atualizar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO, 
+			@PathVariable Long restauranteId) {
 
 		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro",
+		BeanUtils.copyProperties(restauranteInputDTO, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro",
 				"produtos");
 
 		try {
@@ -103,7 +105,7 @@ public class RestauranteController {
 		
 		validate(restauranteAtual, "restaurante");
 
-		return atualizar(restauranteAtual, restauranteId);
+		return atualizar(new RestauranteInputDTO(restauranteAtual), restauranteId);
 	}
 
 	private void validate(Restaurante restaurante, String objectName) {
