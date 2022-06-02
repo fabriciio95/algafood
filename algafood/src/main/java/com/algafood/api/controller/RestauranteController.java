@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.api.assembler.RestauranteDTOAssembler;
+import com.algafood.api.assembler.RestauranteInputDTODisassembler;
 import com.algafood.api.model.RestauranteDTO;
 import com.algafood.api.model.input.RestauranteInputDTO;
 import com.algafood.core.validation.ValidacaoException;
@@ -55,6 +56,9 @@ public class RestauranteController {
 	
 	@Autowired
 	private RestauranteDTOAssembler restauranteDTOAssembler;
+	
+	@Autowired
+	private RestauranteInputDTODisassembler restauranteInputDtoDisassembler;
 
 	@GetMapping
 	public List<RestauranteDTO> listar() {
@@ -83,10 +87,12 @@ public class RestauranteController {
 	@PutMapping("/{restauranteId}")
 	public RestauranteDTO atualizar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO, 
 			@PathVariable Long restauranteId) {
+		
+		Restaurante restaurante = restauranteInputDtoDisassembler.toDomainObject(restauranteInputDTO);
 
 		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-		BeanUtils.copyProperties(restauranteInputDTO, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro",
+		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro",
 				"produtos");
 
 		try {
