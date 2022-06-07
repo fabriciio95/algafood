@@ -88,12 +88,9 @@ public class RestauranteController {
 	public RestauranteDTO atualizar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO, 
 			@PathVariable Long restauranteId) {
 		
-		Restaurante restaurante = restauranteInputDtoDisassembler.toDomainObject(restauranteInputDTO);
-
 		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
-
-		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro",
-				"produtos");
+		
+		restauranteInputDtoDisassembler.copyToDomainObject(restauranteInputDTO, restauranteAtual);
 
 		try {
 
