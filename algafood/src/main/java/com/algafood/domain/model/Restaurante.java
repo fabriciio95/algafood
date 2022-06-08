@@ -37,19 +37,13 @@ public class Restaurante {
 	private Long id;
 
 	
-//	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 	
 	
-//	@PositiveOrZero
-//	@NotNull
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 	
-//	@Valid
-//	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
-//	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
