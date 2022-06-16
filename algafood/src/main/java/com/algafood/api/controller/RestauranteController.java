@@ -32,6 +32,7 @@ import com.algafood.api.assembler.RestauranteInputDTODisassembler;
 import com.algafood.api.model.RestauranteDTO;
 import com.algafood.api.model.input.RestauranteInputDTO;
 import com.algafood.core.validation.ValidacaoException;
+import com.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Restaurante;
@@ -75,10 +76,12 @@ public class RestauranteController {
 	@PostMapping
 	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO) {
 		try {
+			
+			Restaurante restaurante = restauranteInputDtoDisassembler.toDomainObject(restauranteInputDTO);
 
-			return restauranteDTOAssembler.toDTO(cadastroRestaurante.salvar(restauranteInputDTO.toModel()));
+			return restauranteDTOAssembler.toDTO(cadastroRestaurante.salvar(restaurante));
 
-		} catch (CozinhaNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
@@ -95,7 +98,7 @@ public class RestauranteController {
 
 			return restauranteDTOAssembler.toDTO(cadastroRestaurante.salvar(restauranteAtual));
 
-		} catch (CozinhaNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
