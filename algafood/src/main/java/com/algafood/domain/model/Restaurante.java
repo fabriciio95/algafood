@@ -2,6 +2,7 @@ package com.algafood.domain.model;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class Restaurante {
 	private Boolean ativo = Boolean.TRUE;
 	
 	@OneToMany(mappedBy = "restaurante")
-	private List<Produto> produtos;
+	private List<Produto> produtos = new ArrayList<>();
 	
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
@@ -85,6 +86,10 @@ public class Restaurante {
 
 	public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
 		return getFormasPagamento().remove(formaPagamento);
+	}
+	
+	public boolean adicionarProduto(Produto produto) {
+		return getProdutos().add(produto);
 	}
 }
 
