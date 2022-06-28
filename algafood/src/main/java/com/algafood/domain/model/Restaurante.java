@@ -55,6 +55,8 @@ public class Restaurante {
 	
 	private Boolean ativo = Boolean.TRUE;
 	
+	private Boolean aberto= Boolean.FALSE;
+	
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
 	
@@ -88,8 +90,12 @@ public class Restaurante {
 		return getFormasPagamento().remove(formaPagamento);
 	}
 	
-	public boolean adicionarProduto(Produto produto) {
-		return getProdutos().add(produto);
+	public void fechar() {
+		aberto = false;
+	}
+	
+	public void abrir() {
+		aberto = true;
 	}
 }
 
