@@ -19,7 +19,7 @@ import com.algafood.domain.service.CadastroGrupoService;
 
 @RestController
 @RequestMapping("/grupos/{grupoId}/permissoes")
-public class PermissaoController {
+public class GrupoPermissaoController {
 
 	@Autowired
 	private CadastroGrupoService cadastroGrupoService;

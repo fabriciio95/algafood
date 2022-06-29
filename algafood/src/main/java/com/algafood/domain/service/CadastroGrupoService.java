@@ -62,6 +62,7 @@ public class CadastroGrupoService {
 		grupo.adicionarPermissao(permissao);
 	}
 	
+	
 	public Grupo buscarOuFalhar(Long grupoId) {
 		return grupoRepository.findById(grupoId)
 				.orElseThrow(() ->  new GrupoNaoEncontradoException(grupoId));
