@@ -1,7 +1,6 @@
 package com.algafood.domain.model;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
