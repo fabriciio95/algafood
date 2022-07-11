@@ -1,16 +1,10 @@
 package com.algafood.domain.service;
 
-import static com.algafood.domain.model.StatusPedido.*;
-
-import java.time.OffsetDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Pedido;
-import com.algafood.domain.model.StatusPedido;
 
 @Service
 public class FluxoPedidoService {
@@ -22,37 +16,20 @@ public class FluxoPedidoService {
 	public void confirmar(Long pedidoId) {
 		Pedido pedido = emissaoPedidoService.buscaOuFalhar(pedidoId);
 		
-		validarStatus(pedido, CRIADO, CONFIRMADO);
-		
-		pedido.setStatus(CONFIRMADO);
-		pedido.setDataConfirmacao(OffsetDateTime.now());
+		pedido.confirmar();
 	}
 
 	@Transactional
 	public void cancelar(Long pedidoId) {
 		Pedido pedido = emissaoPedidoService.buscaOuFalhar(pedidoId);
 		
-		validarStatus(pedido, CRIADO, CANCELADO);
-		
-		pedido.setStatus(CANCELADO);
-		pedido.setDataCancelamento(OffsetDateTime.now());
+		pedido.cancelar();
 	}
 	
 	@Transactional
 	public void entregar(Long pedidoId) {
 		Pedido pedido = emissaoPedidoService.buscaOuFalhar(pedidoId);
 		
-		validarStatus(pedido, CONFIRMADO, ENTREGUE);
-		
-		pedido.setStatus(ENTREGUE);
-		pedido.setDataEntrega(OffsetDateTime.now());
-	}
-	
-	
-	private void validarStatus(Pedido pedido, StatusPedido statusOrigem, StatusPedido statusDestino) {
-		if(!pedido.getStatus().equals(statusOrigem)) {
-			throw new NegocioException(String.format("Status do pedido %d não pode ser alterado de %s para %s.",
-					pedido.getId(), pedido.getStatus().getDescricao(), statusDestino.getDescricao()));
-		}
+		pedido.entregar();
 	}
 }
