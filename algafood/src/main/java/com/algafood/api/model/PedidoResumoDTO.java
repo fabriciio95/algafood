@@ -27,5 +27,7 @@ public class PedidoResumoDTO {
 	
 	private RestauranteResumoDTO restaurante;
 	
-	private UsuarioDTO cliente;	
+	//private UsuarioDTO cliente;	
+	
+	private String nomeCliente;
 }
