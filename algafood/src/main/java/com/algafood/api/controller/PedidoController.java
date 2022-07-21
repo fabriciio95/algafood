@@ -28,10 +28,10 @@ import com.algafood.api.model.input.PedidoInputDTO;
 import com.algafood.core.data.PageableTranslator;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.exception.NegocioException;
+import com.algafood.domain.filter.PedidoFilter;
 import com.algafood.domain.model.Pedido;
 import com.algafood.domain.model.Usuario;
 import com.algafood.domain.repository.PedidoRepository;
-import com.algafood.domain.repository.filter.PedidoFilter;
 import com.algafood.domain.service.EmissaoPedidoService;
 import com.algafood.infrastructure.repository.spec.PedidoSpecs;
 
@@ -121,9 +121,10 @@ public class PedidoController {
 				"valorTotal", "valorTotal",
 				"status", "status",
 				"dataCriacao", "dataCriacao",
+				"cliente.nome", "cliente.nome",
+				"cliente.id", "cliente.id",
 				"restauranteId", "restaurante.id",
-				"restaurante.nome", "restaurante.nome",
-				"nomeCliente", "cliente.nome"				
+				"restaurante.nome", "restaurante.nome"
 			 );
 		
 		return PageableTranslator.translate(pageable, mapeamento);
