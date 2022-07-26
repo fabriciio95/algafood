@@ -65,27 +65,7 @@ public class PedidoController {
 		Page<PedidoResumoDTO> pedidoResumoDTOPage = new PageImpl<>(pedidos, pageable, pedidosPage.getTotalElements());
 		
 		return pedidoResumoDTOPage;
-	}
-	
-	
-//	@GetMapping
-//	public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
-//		 List<PedidoResumoDTO> pedidos = pedidoResumoDTOAssembler.toListDTO(pedidoRepository.findAll());
-//		 
-//		 MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidos);
-//		 
-//		 SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-//		 filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
-//		 
-//		 if(StringUtils.isNotBlank(campos)) {
-//			 filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos.split(",")));
-//		 }
-//		 
-//		 pedidosWrapper.setFilters(filterProvider);
-//		 
-//		 return pedidosWrapper;
-//	}
-	
+	}	
 	
 
 	@GetMapping("/{codigoPedido}")
