@@ -19,7 +19,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = { FileContentTypeValidator.class})
 public @interface FileContentType {
 	
-	String message() default "Arquivo inválido";
+	String message() default "Foto deve ser um arquivo do tipo {allowed}";
 
 	Class<?>[] groups() default { };
 
