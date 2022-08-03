@@ -14,6 +14,7 @@ public class CatalogoFotoProdutoService {
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
 
 	@Transactional
 	public FotoProduto salvar(FotoProduto foto) {
