@@ -1,25 +1,18 @@
 package com.algafood.infrastructure.service.email;
 
-import java.io.IOException;
-
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.algafood.core.email.EmailProperties;
 import com.algafood.domain.service.EnvioEmailService;
 
-import freemarker.core.ParseException;
 import freemarker.template.Configuration;
-import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
-import freemarker.template.TemplateNotFoundException;
 
-@Service
 public class SmtpEnvioEmailService implements EnvioEmailService {
 	
 	@Autowired
@@ -51,7 +44,7 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
 		}
 	}
 	
-	private String processarTemplate(Mensagem mensagem) {
+	protected String processarTemplate(Mensagem mensagem) {
 		try {
 			
 			Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
