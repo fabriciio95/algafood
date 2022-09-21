@@ -30,6 +30,9 @@ public class FluxoPedidoService {
 		Pedido pedido = emissaoPedidoService.buscaOuFalhar(codigoPedido);
 		
 		pedido.cancelar();
+		
+		pedidoRepository.save(pedido);
+		
 	}
 	
 	@Transactional
