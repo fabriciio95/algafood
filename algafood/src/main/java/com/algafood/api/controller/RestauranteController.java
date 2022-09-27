@@ -11,6 +11,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -43,6 +44,7 @@ import com.algafood.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.net.HttpHeaders;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -65,16 +67,19 @@ public class RestauranteController {
 	
 	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
-	public List<RestauranteDTO> listar() {
-		return restauranteDTOAssembler.toListDTO(restauranteRepository.findAll());
+	public ResponseEntity<List<RestauranteDTO>> listar() {
+		List<RestauranteDTO> restaurantes = restauranteDTOAssembler.toListDTO(restauranteRepository.findAll());
+		return ResponseEntity.ok()
+							 .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://www.algafood.local:8000")
+							 .body(restaurantes);
 	}
 	
-	@JsonView(RestauranteView.ApenasNome.class)
-	@GetMapping(params = "projecao=apenas-nome")
-	public List<RestauranteDTO> listarApenasNomes() {
-		return listar();
-	}
-	
+//	@JsonView(RestauranteView.ApenasNome.class)
+//	@GetMapping(params = "projecao=apenas-nome")
+//	public List<RestauranteDTO> listarApenasNomes() {
+//		return listar();
+//	}
+//	
 
 	@GetMapping("/{restauranteId}")
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {

@@ -2,12 +2,12 @@ function consultarRestaurantes() {
 
 	$.ajax({
 	
-		url: "http://localhost:8080/restaurantes",
+		url: "http://api.algafood.local:8080/restaurantes",
 		type: "get",
 		
 		
 		success: function(response) {
-				$("#conteudo").text(response);
+				$("#conteudo").text(JSON.stringify(response));
 		}
 	
 	});
