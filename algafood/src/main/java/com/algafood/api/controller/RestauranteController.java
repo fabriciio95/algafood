@@ -11,12 +11,12 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -44,8 +44,8 @@ import com.algafood.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.net.HttpHeaders;
 
+@CrossOrigin//(origins = { "http://www.algafood.local:8000", "http://www.matafome.local:8000" })
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -65,21 +65,19 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteInputDTODisassembler restauranteInputDtoDisassembler;
 	
+	
 	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
-	public ResponseEntity<List<RestauranteDTO>> listar() {
-		List<RestauranteDTO> restaurantes = restauranteDTOAssembler.toListDTO(restauranteRepository.findAll());
-		return ResponseEntity.ok()
-							 .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://www.algafood.local:8000")
-							 .body(restaurantes);
+	public List<RestauranteDTO> listar() {
+		return restauranteDTOAssembler.toListDTO(restauranteRepository.findAll());
 	}
 	
-//	@JsonView(RestauranteView.ApenasNome.class)
-//	@GetMapping(params = "projecao=apenas-nome")
-//	public List<RestauranteDTO> listarApenasNomes() {
-//		return listar();
-//	}
-//	
+	@JsonView(RestauranteView.ApenasNome.class)
+	@GetMapping(params = "projecao=apenas-nome")
+	public List<RestauranteDTO> listarApenasNomes() {
+		return listar();
+	}
+	
 
 	@GetMapping("/{restauranteId}")
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
