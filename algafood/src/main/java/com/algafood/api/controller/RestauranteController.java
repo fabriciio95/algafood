@@ -45,7 +45,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin//(origins = { "http://www.algafood.local:8000", "http://www.matafome.local:8000" })
+@CrossOrigin(maxAge = 10)//(origins = { "http://www.algafood.local:8000", "http://www.matafome.local:8000" })
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
