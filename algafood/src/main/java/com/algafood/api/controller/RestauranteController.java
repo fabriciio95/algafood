@@ -16,7 +16,6 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -45,7 +44,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin(maxAge = 10)//(origins = { "http://www.algafood.local:8000", "http://www.matafome.local:8000" })
+//@CrossOrigin(maxAge = 10)//(origins = { "http://www.algafood.local:8000", "http://www.matafome.local:8000" })
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
