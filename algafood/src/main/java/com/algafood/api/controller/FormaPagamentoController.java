@@ -1,5 +1,6 @@
 package com.algafood.api.controller;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import com.algafood.api.assembler.FormaPagamentoDTOAssembler;
 import com.algafood.api.assembler.FormaPagamentoDTODisassembler;
@@ -44,7 +47,21 @@ public class FormaPagamentoController {
 	private CadastroFormaPagamentoService cadastroFormaPagamentoService;
 	
 	@GetMapping
-	public ResponseEntity<List<FormaPagamentoDTO>> listar() {
+	public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
+		
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+		
+		String eTag = "0";
+		
+		OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
+		
+		if(dataUltimaAtualizacao != null) {
+			eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
+		}
+		
+		if(request.checkNotModified(eTag)) {
+			return null;
+		}
 		
 		List<FormaPagamentoDTO> formasPagamento = formaPagamentoDTOAssembler.toListDTO(formaPagamentoRepository.findAll());
 		
@@ -54,6 +71,7 @@ public class FormaPagamentoController {
 							 .cacheControl(CacheControl.maxAge(10L, TimeUnit.SECONDS).cachePublic())
 							// .cacheControl(CacheControl.noCache())
 							// .cacheControl(CacheControl.noStore())
+							 .eTag(eTag)
 							 .body(formasPagamento);
 	}
 	
