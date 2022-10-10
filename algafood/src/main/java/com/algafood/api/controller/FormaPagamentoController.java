@@ -45,6 +45,7 @@ public class FormaPagamentoController {
 	
 	@GetMapping
 	public ResponseEntity<List<FormaPagamentoDTO>> listar() {
+		
 		List<FormaPagamentoDTO> formasPagamento = formaPagamentoDTOAssembler.toListDTO(formaPagamentoRepository.findAll());
 		
 		return ResponseEntity.ok()
