@@ -10,6 +10,9 @@ import com.algafood.domain.model.FormaPagamento;
 
 @Repository
 public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, Long> {
+	
+	@Query("select dataAtualizacao from FormaPagamento where id = :formaPagamentoId")
+	OffsetDateTime getDataAtualizacaoById(Long formaPagamentoId);
 
 	@Query("select max(dataAtualizacao) from FormaPagamento")
 	OffsetDateTime getDataUltimaAtualizacao();
