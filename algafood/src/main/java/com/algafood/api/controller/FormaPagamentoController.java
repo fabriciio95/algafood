@@ -66,11 +66,7 @@ public class FormaPagamentoController {
 		List<FormaPagamentoDTO> formasPagamento = formaPagamentoDTOAssembler.toListDTO(formaPagamentoRepository.findAll());
 		
 		return ResponseEntity.ok()
-							 //.cacheControl(CacheControl.maxAge(10L, TimeUnit.SECONDS))
-							// .cacheControl(CacheControl.maxAge(10L, TimeUnit.SECONDS).cachePrivate())
 							 .cacheControl(CacheControl.maxAge(10L, TimeUnit.SECONDS).cachePublic())
-							// .cacheControl(CacheControl.noCache())
-							// .cacheControl(CacheControl.noStore())
 							 .eTag(eTag)
 							 .body(formasPagamento);
 	}
