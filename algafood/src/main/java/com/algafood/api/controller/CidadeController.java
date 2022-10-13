@@ -26,6 +26,7 @@ import com.algafood.domain.repository.CidadeRepository;
 import com.algafood.domain.service.CadastroCidadeService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 
 @Api(tags = "Cidades")
@@ -42,16 +43,19 @@ public class CidadeController {
 	
 	private CidadeInputDTODisassembler cidadeInputDTODisassembler;
 
+	@ApiOperation("Lista as cidades")
 	@GetMapping
 	public List<CidadeDTO> listar() {
 		return cidadeDTOAssembler.toListDTO(cidadeRepository.findAll());
 	}
 
+	@ApiOperation("Busca uma cidade por ID")
 	@GetMapping("/{cidadeId}")
 	public CidadeDTO buscar(@PathVariable Long cidadeId) {
 		return cidadeDTOAssembler.toDTO(cadastroCidade.buscarOuFalhar(cidadeId));
 	}
 
+	@ApiOperation("Cadastra uma cidade")
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public CidadeDTO adicionar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO) {
@@ -66,6 +70,7 @@ public class CidadeController {
 		}
 	}
 
+	@ApiOperation("Atualiza uma cidade por ID")
 	@PutMapping("/{cidadeId}")
 	public CidadeDTO atualizar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO, @PathVariable Long cidadeId) {
 		
@@ -82,6 +87,7 @@ public class CidadeController {
 		}
 	}
 
+	@ApiOperation("Exclui uma cidade por ID")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{cidadeId}")
 	public void excluir(@PathVariable Long cidadeId) {
