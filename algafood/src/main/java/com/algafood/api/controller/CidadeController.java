@@ -25,8 +25,10 @@ import com.algafood.domain.model.Cidade;
 import com.algafood.domain.repository.CidadeRepository;
 import com.algafood.domain.service.CadastroCidadeService;
 
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 
+@Api(tags = "Cidades")
 @RestController
 @RequestMapping("/cidades")
 @AllArgsConstructor
