@@ -27,6 +27,7 @@ import com.algafood.domain.service.CadastroCidadeService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 
 @Api(tags = "Cidades")
@@ -51,14 +52,15 @@ public class CidadeController {
 
 	@ApiOperation("Busca uma cidade por ID")
 	@GetMapping("/{cidadeId}")
-	public CidadeDTO buscar(@PathVariable Long cidadeId) {
+	public CidadeDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId) {
 		return cidadeDTOAssembler.toDTO(cadastroCidade.buscarOuFalhar(cidadeId));
 	}
 
 	@ApiOperation("Cadastra uma cidade")
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public CidadeDTO adicionar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO) {
+	public CidadeDTO adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova cidade")
+					@RequestBody @Valid CidadeInputDTO cidadeInputDTO) {
 		try {
 			
 			Cidade cidade = cidadeInputDTODisassembler.toDomainObject(cidadeInputDTO);
@@ -72,7 +74,9 @@ public class CidadeController {
 
 	@ApiOperation("Atualiza uma cidade por ID")
 	@PutMapping("/{cidadeId}")
-	public CidadeDTO atualizar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO, @PathVariable Long cidadeId) {
+	public CidadeDTO atualizar(@ApiParam(name = "corpo", value = "Representação de uma cidade com os novos dados")
+			@RequestBody @Valid CidadeInputDTO cidadeInputDTO,
+			@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId) {
 		
 		Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
 
@@ -90,7 +94,7 @@ public class CidadeController {
 	@ApiOperation("Exclui uma cidade por ID")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{cidadeId}")
-	public void excluir(@PathVariable Long cidadeId) {
+	public void excluir(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId) {
 		cadastroCidade.excluir(cidadeId);
 	}
 }
