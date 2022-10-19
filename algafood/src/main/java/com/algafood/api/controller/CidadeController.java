@@ -31,7 +31,7 @@ import lombok.AllArgsConstructor;
 
 
 @RestController
-@RequestMapping(value = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class CidadeController implements CidadeControllerOpenApi {
 
