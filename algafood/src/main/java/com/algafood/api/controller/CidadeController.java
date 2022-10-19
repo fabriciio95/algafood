@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ import lombok.AllArgsConstructor;
 
 
 @RestController
-@RequestMapping("/cidades")
+@RequestMapping(value = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class CidadeController implements CidadeControllerOpenApi {
 
