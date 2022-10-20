@@ -35,6 +35,9 @@ import com.algafood.domain.repository.PedidoRepository;
 import com.algafood.domain.service.EmissaoPedidoService;
 import com.algafood.infrastructure.repository.spec.PedidoSpecs;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
@@ -54,6 +57,10 @@ public class PedidoController {
 	@Autowired
 	private PedidoInputDTODisassembler pedidoInputDTODisassembler;
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+						  name = "campos", paramType = "query", type = "string")	
+	})
 	@GetMapping
 	public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		pageable = traduzirPageable(pageable);
@@ -67,7 +74,10 @@ public class PedidoController {
 		return pedidoResumoDTOPage;
 	}	
 	
-
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+						  name = "campos", paramType = "query", type = "string")	
+	})
 	@GetMapping("/{codigoPedido}")
 	public PedidoDTO buscar(@PathVariable String codigoPedido) {
 		Pedido pedido = cadastroPedidoService.buscaOuFalhar(codigoPedido);
