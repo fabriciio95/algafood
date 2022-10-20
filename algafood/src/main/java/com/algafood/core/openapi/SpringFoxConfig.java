@@ -64,7 +64,9 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.alternateTypeRules(AlternateTypeRules
 							.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), CozinhasDTOOpenApi.class))
 				.apiInfo(apiInfo())
-				.tags(new Tag("Cidades", "Gerencia as cidades"), new Tag("Grupos", "Gerencia os grupos"));
+				.tags(new Tag("Cidades", "Gerencia as cidades"),
+					  new Tag("Grupos", "Gerencia os grupos"),
+					  new Tag("Cozinhas", "Gerencia as cozinhas"));
 	}
 	
 	private List<ResponseMessage> globalDeleteResponseMessages() {
