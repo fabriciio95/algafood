@@ -9,6 +9,7 @@ import javax.validation.constraints.PositiveOrZero;
 
 import com.algafood.domain.model.Restaurante;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,17 +19,21 @@ import lombok.Setter;
 @Getter
 public class RestauranteInputDTO {
 
+	@ApiModelProperty(example = "Thai Gourmet")
 	@NotBlank
 	private String nome;
 	
+	@ApiModelProperty(example = "12.00")
 	@NotNull
 	@PositiveOrZero
 	private BigDecimal taxaFrete;
 	
+	@ApiModelProperty(required = true)
 	@Valid
 	@NotNull
 	private CozinhaIdInputDTO cozinha;
 	
+	@ApiModelProperty(required = true)
 	@Valid
 	@NotNull
 	private EnderecoInputDTO endereco;

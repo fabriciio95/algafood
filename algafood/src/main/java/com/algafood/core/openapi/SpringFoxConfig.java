@@ -3,6 +3,9 @@ package com.algafood.core.openapi;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.mapping.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -17,9 +20,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.CozinhaDTO;
 import com.algafood.api.model.PedidoResumoDTO;
+import com.algafood.api.model.input.RestauranteInputDTO;
 import com.algafood.api.openapi.model.CozinhasDTOOpenApi;
+import com.algafood.api.openapi.model.EnderecoInputModelOpenApi;
 import com.algafood.api.openapi.model.PageableModelOpenApi;
 import com.algafood.api.openapi.model.PedidosResumoDTOOpenApi;
+import com.algafood.api.openapi.model.RestauranteInputModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
@@ -61,6 +67,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
 				.globalResponseMessage(RequestMethod.POST, globalPostResponseMessages())
 				.globalResponseMessage(RequestMethod.PUT, globalPutResponseMessages())
+				.globalResponseMessage(RequestMethod.PATCH, globalPutResponseMessages())
 				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
 //				.globalOperationParameters(Arrays.asList(
 //						new ParameterBuilder()
@@ -69,9 +76,12 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 //								.parameterType("query")
 //								.modelRef(new ModelRef("string"))
 //								.build()))
-				.additionalModels(typeResolver.resolve(Problem.class))
-				.ignoredParameterTypes(ServletWebRequest.class)
+				.additionalModels(typeResolver.resolve(Problem.class),
+						typeResolver.resolve(RestauranteInputModelOpenApi.class),
+						typeResolver.resolve(EnderecoInputModelOpenApi.class))
+				.ignoredParameterTypes(ServletWebRequest.class, HttpServletRequest.class)
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.directModelSubstitute(Map.class, RestauranteInputDTO.class)
 				.alternateTypeRules(
 						AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), CozinhasDTOOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class))
@@ -80,7 +90,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 					  new Tag("Grupos", "Gerencia os grupos"),
 					  new Tag("Cozinhas", "Gerencia as cozinhas"),
 					  new Tag("Formas de Pagamento", "Gerencia as formas de pagamento"),
-					  new Tag("Pedidos", "Gerencia os pedidos"));
+					  new Tag("Pedidos", "Gerencia os pedidos"),
+					  new Tag("Restaurantes", "Gerencia os restaurantes"));
 	}
 	
 	private List<ResponseMessage> globalDeleteResponseMessages() {

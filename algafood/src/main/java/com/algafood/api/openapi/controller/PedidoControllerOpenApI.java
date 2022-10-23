@@ -37,13 +37,13 @@ public interface PedidoControllerOpenApI {
 	})
 	@ApiOperation("Busca um pedido por código")
 	PedidoDTO buscar(@ApiParam(value = "Código de um pedido", 
-							example = "313c828d-5787-4689-aaf4-e94678446682") String codigoPedido);
+							example = "313c828d-5787-4689-aaf4-e94678446682", required = true) String codigoPedido);
 
 
 	@ApiResponses({
 		@ApiResponse(code = 201, message = "Pedido registrado", response = Problem.class)
 	})
 	@ApiOperation("Registra um pedido")
-	PedidoDTO adicionar(@ApiParam(value = "Representação de um novo pedido", name = "corpo") PedidoInputDTO pedidoInputDTO);
+	PedidoDTO adicionar(@ApiParam(value = "Representação de um novo pedido", name = "corpo", required = true) PedidoInputDTO pedidoInputDTO);
 
 }

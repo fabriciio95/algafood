@@ -23,27 +23,29 @@ public interface CidadeControllerOpenApi {
 		@ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
 	})
 	@ApiOperation("Busca uma cidade por ID")
-	CidadeDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId);
+	CidadeDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
 	@ApiResponses({	
 		@ApiResponse(code = 201, message = "Cidade Cadastrada")
 	})
 	@ApiOperation("Cadastra uma cidade")
-	CidadeDTO adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova cidade") CidadeInputDTO cidadeInputDTO);
+	CidadeDTO adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova cidade",
+					required = true) CidadeInputDTO cidadeInputDTO);
 
 	@ApiResponses({	
 		@ApiResponse(code = 200, message = "Cidade Atualizada"),
 		@ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
 	})
 	@ApiOperation("Atualiza uma cidade por ID")
-	CidadeDTO atualizar(@ApiParam(name = "corpo", value = "Representação de uma cidade com os novos dados") CidadeInputDTO cidadeInputDTO,
-			@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId);
+	CidadeDTO atualizar(@ApiParam(name = "corpo", value = "Representação de uma cidade com os novos dados", 
+		required = true) CidadeInputDTO cidadeInputDTO, @ApiParam(value = "ID de uma cidade", example = "1",
+		required = true) Long cidadeId);
 
 	@ApiResponses({	
 		@ApiResponse(code = 204, message = "Cidade excluída"),
 		@ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
 	})
 	@ApiOperation("Exclui uma cidade por ID")
-	void excluir(@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId);
+	void excluir(@ApiParam(value = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
 }
