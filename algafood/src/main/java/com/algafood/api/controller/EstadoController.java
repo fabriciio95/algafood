@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.algafood.api.assembler.EstadoDTOAssembler;
 import com.algafood.api.assembler.EstadoInputDTODisassembler;
 import com.algafood.api.model.EstadoDTO;
 import com.algafood.api.model.input.EstadoInputDTO;
+import com.algafood.api.openapi.controller.EstadoControllerOpenApi;
 import com.algafood.domain.model.Estado;
 import com.algafood.domain.repository.EstadoRepository;
 import com.algafood.domain.service.CadastroEstadoService;
@@ -26,9 +28,9 @@ import com.algafood.domain.service.CadastroEstadoService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/estados")
+@RequestMapping(path = "/estados", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
-public class EstadoController {
+public class EstadoController implements EstadoControllerOpenApi {
 
 	private EstadoRepository estadoRepository;
 

@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.mapping.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.CozinhaDTO;
 import com.algafood.api.model.PedidoResumoDTO;
-import com.algafood.api.model.input.RestauranteInputDTO;
 import com.algafood.api.openapi.model.CozinhasDTOOpenApi;
 import com.algafood.api.openapi.model.EnderecoInputModelOpenApi;
 import com.algafood.api.openapi.model.PageableModelOpenApi;
@@ -81,7 +79,6 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						typeResolver.resolve(EnderecoInputModelOpenApi.class))
 				.ignoredParameterTypes(ServletWebRequest.class, HttpServletRequest.class)
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
-				.directModelSubstitute(Map.class, RestauranteInputDTO.class)
 				.alternateTypeRules(
 						AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), CozinhasDTOOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class))
@@ -91,7 +88,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 					  new Tag("Cozinhas", "Gerencia as cozinhas"),
 					  new Tag("Formas de Pagamento", "Gerencia as formas de pagamento"),
 					  new Tag("Pedidos", "Gerencia os pedidos"),
-					  new Tag("Restaurantes", "Gerencia os restaurantes"));
+					  new Tag("Restaurantes", "Gerencia os restaurantes"),
+					  new Tag("Estados", "Gerencia os estados"));
 	}
 	
 	private List<ResponseMessage> globalDeleteResponseMessages() {
