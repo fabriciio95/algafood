@@ -1,4 +1,4 @@
-package com.algafood.api.controller;
+package com.algafood.api.openapi.controller;
 
 import java.io.IOException;
 

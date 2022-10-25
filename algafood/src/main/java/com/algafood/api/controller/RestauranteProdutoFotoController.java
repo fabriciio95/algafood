@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.algafood.api.assembler.FotoProdutoAssembler;
 import com.algafood.api.model.FotoProdutoDTO;
 import com.algafood.api.model.input.FotoProdutoInputDTO;
+import com.algafood.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.FotoProduto;
 import com.algafood.domain.model.Produto;
