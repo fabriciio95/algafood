@@ -1,5 +1,10 @@
 package com.algafood.core.openapi;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -77,7 +83,14 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.additionalModels(typeResolver.resolve(Problem.class),
 						typeResolver.resolve(RestauranteInputModelOpenApi.class),
 						typeResolver.resolve(EnderecoInputModelOpenApi.class))
-				.ignoredParameterTypes(ServletWebRequest.class, HttpServletRequest.class)
+				.ignoredParameterTypes(ServletWebRequest.class,
+									   HttpServletRequest.class,
+									   URL.class,
+									   URI.class,
+									   URLStreamHandler.class,
+									   Resource.class,
+									   File.class,
+									   InputStream.class)
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.alternateTypeRules(
 						AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), CozinhasDTOOpenApi.class),
