@@ -60,10 +60,6 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-//					.apis(Predicates.and(
-//							RequestHandlerSelectors.basePackage("com.algafood.api"),
-//							RequestHandlerSelectors.basePackage("com.algafood.outro")))
-//					.paths(PathSelectors.ant("/restaurantes/*"))
 					.apis(RequestHandlerSelectors.basePackage("com.algafood.api"))
 					.paths(PathSelectors.any())
 				.build()
@@ -73,13 +69,6 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.globalResponseMessage(RequestMethod.PUT, globalPutResponseMessages())
 				.globalResponseMessage(RequestMethod.PATCH, globalPutResponseMessages())
 				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
-//				.globalOperationParameters(Arrays.asList(
-//						new ParameterBuilder()
-//								.name("campos")
-//								.description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
-//								.parameterType("query")
-//								.modelRef(new ModelRef("string"))
-//								.build()))
 				.additionalModels(typeResolver.resolve(Problem.class),
 						typeResolver.resolve(RestauranteInputModelOpenApi.class),
 						typeResolver.resolve(EnderecoInputModelOpenApi.class))
