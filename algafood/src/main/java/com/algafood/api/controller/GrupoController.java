@@ -27,7 +27,7 @@ import com.algafood.domain.repository.GrupoRepository;
 import com.algafood.domain.service.CadastroGrupoService;
 
 @RestController
-@RequestMapping(path = "/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/grupos")
 public class GrupoController implements GrupoControllerOpenApi {
 
 	@Autowired
@@ -44,19 +44,19 @@ public class GrupoController implements GrupoControllerOpenApi {
 	
 	
 	@Override
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<GrupoDTO> listar() {
 		return grupoDTOAssembler.toListDTO(grupoRepository.findAll());
 	}
 	
 	@Override
-	@GetMapping("/{grupoId}")
+	@GetMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public GrupoDTO buscarPorId(@PathVariable Long grupoId) {
 		return grupoDTOAssembler.toDTO(cadastroGrupoService.buscarOuFalhar(grupoId));
 	}
 	
 	@Override
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public GrupoDTO adicionar(@RequestBody @Valid GrupoInputDTO grupoInputDTO) {
 		
@@ -66,7 +66,7 @@ public class GrupoController implements GrupoControllerOpenApi {
 	}
 	
 	@Override
-	@PutMapping("/{grupoId}")
+	@PutMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public GrupoDTO atualizar(@RequestBody @Valid GrupoInputDTO grupoInputDTO, @PathVariable Long grupoId) {
 		
 		Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);

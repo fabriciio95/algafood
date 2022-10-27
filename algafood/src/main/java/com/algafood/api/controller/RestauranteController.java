@@ -47,7 +47,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/restaurantes")
 public class RestauranteController implements RestauranteControllerOpenApi {
 
 	@Autowired
@@ -67,19 +67,19 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 	
 	@JsonView(RestauranteView.Resumo.class)
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<RestauranteDTO> listar() {
 		return restauranteDTOAssembler.toListDTO(restauranteRepository.findAll());
 	}
 	
 	@JsonView(RestauranteView.ApenasNome.class)
-	@GetMapping(params = "projecao=apenas-nome")
+	@GetMapping(params = "projecao=apenas-nome", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<RestauranteDTO> listarApenasNomes() {
 		return listar();
 	}
 	
 
-	@GetMapping("/{restauranteId}")
+	@GetMapping(path = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
 	   Restaurante restaurante =  cadastroRestaurante.buscarOuFalhar(restauranteId);
 	   	     
@@ -88,7 +88,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	
 
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO) {
 		try {
 			
@@ -101,7 +101,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
-	@PutMapping("/{restauranteId}")
+	@PutMapping(path = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteDTO atualizar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO, 
 			@PathVariable Long restauranteId) {
 		
@@ -163,7 +163,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	}
 
 
-	@PatchMapping("/{restauranteId}")
+	@PatchMapping(path = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteDTO atualizarParcial(@RequestBody Map<String, Object> campos, @PathVariable Long restauranteId,
 			HttpServletRequest request) {
 

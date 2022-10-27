@@ -20,7 +20,7 @@ import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.service.CadastroRestauranteService;
 
 @RestController
-@RequestMapping(path = "/restaurantes/{restauranteId}/responsaveis", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/restaurantes/{restauranteId}/responsaveis")
 public class RestauranteUsuarioController implements RestauranteUsuarioControllerOpenApi {
 
 	
@@ -30,7 +30,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 	@Autowired
 	private UsuarioDTOAssembler usuarioDTOAssembler;
 	
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<UsuarioDTO> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 		

@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,11 +17,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.CozinhaDTO;
@@ -31,26 +31,26 @@ import com.algafood.api.openapi.model.PageableModelOpenApi;
 import com.algafood.api.openapi.model.PedidosResumoDTOOpenApi;
 import com.algafood.api.openapi.model.RestauranteInputModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.schema.AlternateTypeRules;
-import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.ResponseMessage;
+import springfox.documentation.service.Response;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class)
-public class SpringFoxConfig implements WebMvcConfigurer {
+public class SpringFoxConfig {
 
 	@Bean
 	public Docket apiDocket() {
@@ -58,7 +58,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		var typeResolver = new TypeResolver();
 		
 		
-		return new Docket(DocumentationType.SWAGGER_2)
+		return new Docket(DocumentationType.OAS_30)
 				.select()
 //					.apis(Predicates.and(
 //							RequestHandlerSelectors.basePackage("com.algafood.api"),
@@ -68,17 +68,18 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 					.paths(PathSelectors.any())
 				.build()
 				.useDefaultResponseMessages(false)
-				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
-				.globalResponseMessage(RequestMethod.POST, globalPostResponseMessages())
-				.globalResponseMessage(RequestMethod.PUT, globalPutResponseMessages())
-				.globalResponseMessage(RequestMethod.PATCH, globalPutResponseMessages())
-				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
-//				.globalOperationParameters(Arrays.asList(
-//						new ParameterBuilder()
+				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
+				.globalResponses(HttpMethod.POST, globalPostResponseMessages())
+				.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
+				.globalResponses(HttpMethod.PATCH, globalPutResponseMessages())
+				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
+//				.globalRequestParameters(Collections.singletonList(
+//						new RequestParameterBuilder()
 //								.name("campos")
 //								.description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
-//								.parameterType("query")
-//								.modelRef(new ModelRef("string"))
+//								.in(ParameterType.QUERY)
+//								.required(true)
+//								.query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
 //								.build()))
 				.additionalModels(typeResolver.resolve(Problem.class),
 						typeResolver.resolve(RestauranteInputModelOpenApi.class),
@@ -108,87 +109,96 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 					  new Tag("Estatísticas", "Estatísticas da AlgaFood"));
 	}
 	
-	private List<ResponseMessage> globalDeleteResponseMessages() {
+	private List<Response> globalDeleteResponseMessages() {
 		return Arrays.asList(
-					new ResponseMessageBuilder()
-							.code(HttpStatus.BAD_REQUEST.value())
-							.message("Requisição inválida (erro do cliente)")
-							.responseModel(new ModelRef("Problema"))
+					new ResponseBuilder ()
+							.code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+							.description("Requisição inválida (erro do cliente)")
+							.representation(MediaType.APPLICATION_JSON)
+							.apply(getProblemaModelReference())
 							.build(),
 							
-					new ResponseMessageBuilder()
-							.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-							.message("Erro interno no servidor")
-							.responseModel(new ModelRef("Problema"))
+					new ResponseBuilder ()
+							.code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+							.description("Erro interno no servidor")
+							.representation(MediaType.APPLICATION_JSON)
+							.apply(getProblemaModelReference())
 							.build()
 				);
 	}
 
-	private List<ResponseMessage> globalPutResponseMessages() {
+	private List<Response> globalPutResponseMessages() {
 		return Arrays.asList(
-					new ResponseMessageBuilder()
-						.code(HttpStatus.BAD_REQUEST.value())
-						.message("Requisição inválida (erro do cliente)")
-						.responseModel(new ModelRef("Problema"))
+					new ResponseBuilder()
+						.code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+						.description("Requisição inválida (erro do cliente)")
+						.representation(MediaType.APPLICATION_JSON)
+						.apply(getProblemaModelReference())
 						.build(),
 						
-					new ResponseMessageBuilder()
-						.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-						.message("Erro interno no servidor")
-						.responseModel(new ModelRef("Problema"))
+					new ResponseBuilder()
+						.code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+						.description("Erro interno no servidor")
+						.representation(MediaType.APPLICATION_JSON)
+						.apply(getProblemaModelReference())
 						.build(),
 						
-					new ResponseMessageBuilder()
-						.code(HttpStatus.NOT_ACCEPTABLE.value())
-						.message("Recurso não possui representação que poderia ser aceita pelo consumidor")
+					new ResponseBuilder()
+						.code(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()))
+						.description("Recurso não possui representação que poderia ser aceita pelo consumidor")
 						.build(),
 						
-					new ResponseMessageBuilder()
-						.code(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
-						.message("Requisição recusada porque o corpo está em um formato não suportado")
-						.responseModel(new ModelRef("Problema"))
+					new ResponseBuilder()
+						.code(String.valueOf(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()))
+						.description("Requisição recusada porque o corpo está em um formato não suportado")
+						.representation(MediaType.APPLICATION_JSON)
+						.apply(getProblemaModelReference())
 						.build()
 				);
 	}
 
-	private List<ResponseMessage> globalPostResponseMessages() {
+	private List<Response> globalPostResponseMessages() {
 		return Arrays.asList(
-					new ResponseMessageBuilder()
-						.code(HttpStatus.BAD_REQUEST.value())
-						.message("Requisição inválida (erro do cliente)")
-						.responseModel(new ModelRef("Problema"))
+					new ResponseBuilder()
+						.code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+						.description("Requisição inválida (erro do cliente)")
+						.representation(MediaType.APPLICATION_JSON)
+						.apply(getProblemaModelReference())
 						.build(),
 						
-					new ResponseMessageBuilder()
-						.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-						.message("Erro interno no servidor")
-						.responseModel(new ModelRef("Problema"))
+					new ResponseBuilder()
+						.code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+						.description("Erro interno no servidor")
+						.representation(MediaType.APPLICATION_JSON)
+						.apply(getProblemaModelReference())
 						.build(),
 					
-					new ResponseMessageBuilder()
-						.code(HttpStatus.NOT_ACCEPTABLE.value())
-						.message("Recurso não possui representação que poderia ser aceita pelo consumidor")
+					new ResponseBuilder()
+						.code(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()))
+						.description("Recurso não possui representação que poderia ser aceita pelo consumidor")
 						.build(),
 						
-					new ResponseMessageBuilder()
-						.code(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
-						.message("Requisição recusada porque o corpo está em um formato não suportado")
-						.responseModel(new ModelRef("Problema"))
+					new ResponseBuilder()
+						.code(String.valueOf(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()))
+						.description("Requisição recusada porque o corpo está em um formato não suportado")
+						.representation(MediaType.APPLICATION_JSON)
+						.apply(getProblemaModelReference())
 						.build()
 				);
 	}
 
-	private List<ResponseMessage> globalGetResponseMessages() {
+	private List<Response> globalGetResponseMessages() {
 		return Arrays.asList(
-					new ResponseMessageBuilder()
-							.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-							.message("Erro interno do servidor")
-							.responseModel(new ModelRef("Problema"))
+					new ResponseBuilder()
+							.code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+							.description("Erro interno do servidor")
+							.representation(MediaType.APPLICATION_JSON)
+							.apply(getProblemaModelReference())
 							.build(),
 							
-					new ResponseMessageBuilder()
-							.code(HttpStatus.NOT_ACCEPTABLE.value())
-							.message("Recurso não possui representação que poderia ser aceita pelo consumidor")
+					new ResponseBuilder()
+							.code(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()))
+							.description("Recurso não possui representação que poderia ser aceita pelo consumidor")
 							.build()
 							
 				);
@@ -203,12 +213,14 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.build();
 	}
 	
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/swagger-ui.html")
-			.addResourceLocations("classpath:/META-INF/resources/");
-		
-		registry.addResourceHandler("/webjars/**")
-			.addResourceLocations("classpath:/META-INF/resources/webjars/");
+	private Consumer<RepresentationBuilder> getProblemaModelReference() {
+	    return r -> r.model(m -> m.name("Problema")
+	            .referenceModel(ref -> ref.key(k -> k.qualifiedModelName(
+	                    q -> q.name("Problema").namespace("com.algafood.api.exceptionhandler")))));
+	}
+	
+	@Bean
+	public JacksonModuleRegistrar springFoxJacksonConfig() {
+		return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
 	}
 }

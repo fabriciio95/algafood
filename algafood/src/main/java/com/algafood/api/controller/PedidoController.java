@@ -38,7 +38,7 @@ import com.algafood.domain.service.EmissaoPedidoService;
 import com.algafood.infrastructure.repository.spec.PedidoSpecs;
 
 @RestController
-@RequestMapping(path = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/pedidos")
 public class PedidoController implements PedidoControllerOpenApI {
 	
 	@Autowired
@@ -57,7 +57,7 @@ public class PedidoController implements PedidoControllerOpenApI {
 	private PedidoInputDTODisassembler pedidoInputDTODisassembler;
 	
 	
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		pageable = traduzirPageable(pageable);
 		
@@ -70,7 +70,7 @@ public class PedidoController implements PedidoControllerOpenApI {
 		return pedidoResumoDTOPage;
 	}	
 	
-	@GetMapping("/{codigoPedido}")
+	@GetMapping(path = "/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PedidoDTO buscar(@PathVariable String codigoPedido) {
 		Pedido pedido = cadastroPedidoService.buscaOuFalhar(codigoPedido);
 		
@@ -78,7 +78,7 @@ public class PedidoController implements PedidoControllerOpenApI {
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public PedidoDTO adicionar(@RequestBody @Valid PedidoInputDTO pedidoInputDTO) {
 		try {
 			

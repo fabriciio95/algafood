@@ -31,7 +31,7 @@ import com.algafood.domain.repository.CozinhaRepository;
 import com.algafood.domain.service.CadastroCozinhaService;
 
 @RestController
-@RequestMapping(path = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/cozinhas")
 public class CozinhaController implements CozinhaControllerOpenApi {
 
 	@Autowired
@@ -47,7 +47,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	private CozinhaDTODisassembler cozinhaDTODisassembler;
 
 	@Override
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) {
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 		
@@ -59,13 +59,13 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	}
 
 	@Override
-	@GetMapping("/{cozinhaId}")
+	@GetMapping(path = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
 		return cozinhaDTOAssembler.toDTO(cadastroCozinha.buscarOuFalhar(cozinhaId));
 	}
 
 	@Override
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaDTO adicionar(@RequestBody @Valid CozinhaInputDTO cozinhaInputDTO) {
 		
@@ -75,7 +75,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	}
 
 	@Override
-	@PutMapping("/{cozinhaId}")
+	@PutMapping(path = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CozinhaDTO atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInputDTO cozinhaInputDTO) {
 		Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
 		

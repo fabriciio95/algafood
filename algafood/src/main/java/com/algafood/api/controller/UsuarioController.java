@@ -28,7 +28,7 @@ import com.algafood.domain.repository.UsuarioRepository;
 import com.algafood.domain.service.CadastroUsuarioService;
 
 @RestController
-@RequestMapping(path = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/usuarios")
 public class UsuarioController implements UsuarioControllerOpenApi {
 
 	@Autowired
@@ -44,17 +44,17 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	private UsuarioInputDisassembler usuarioInputDisassembler;
 	
 	
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<UsuarioDTO> listar() {
 		return usuarioDTOAssembler.toListDTO(usuarioRepository.findAll());
 	}
 	
-	@GetMapping("/{usuarioId}")
+	@GetMapping(path = "/{usuarioId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public UsuarioDTO buscarPorId(@PathVariable Long usuarioId) {
 		return usuarioDTOAssembler.toDTO(cadastroUsuarioService.buscarOuFalhar(usuarioId));
 	}
 	
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioDTO adicionar(@RequestBody @Valid UsuarioComSenhaInputDTO usuarioInputDTO) {
 		Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInputDTO);
@@ -62,7 +62,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		return usuarioDTOAssembler.toDTO(cadastroUsuarioService.salvar(usuario));
 	}
 	
-	@PutMapping("/{usuarioId}")
+	@PutMapping(path = "/{usuarioId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public UsuarioDTO atualizar(@RequestBody @Valid UsuarioInputDTO usuarioInputDTO, @PathVariable Long usuarioId) {
 		Usuario usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
 		

@@ -28,7 +28,7 @@ import com.algafood.domain.service.CadastroEstadoService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping(path = "/estados", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/estados")
 @AllArgsConstructor
 public class EstadoController implements EstadoControllerOpenApi {
 
@@ -40,17 +40,17 @@ public class EstadoController implements EstadoControllerOpenApi {
 	
 	private EstadoInputDTODisassembler estadoInputDTODisassembler;
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<EstadoDTO> listar() {
 		return estadoDTOAssembler.toListDTO(estadoRepository.findAll());
 	}
 
-	@GetMapping("/{estadoId}")
+	@GetMapping(path = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public EstadoDTO buscar(@PathVariable Long estadoId) {
 		return estadoDTOAssembler.toDTO(cadastroEstado.buscarOuFalhar(estadoId));
 	}
 
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public EstadoDTO adicionar(@RequestBody @Valid EstadoInputDTO estadoInputDTO) {
 		
@@ -59,7 +59,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 		return estadoDTOAssembler.toDTO(estadoRepository.save(estado));
 	}
 
-	@PutMapping("/{estadoId}")
+	@PutMapping(path = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public EstadoDTO atualizar(@RequestBody @Valid EstadoInputDTO estadoInputDTO, @PathVariable Long estadoId) {
 		Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
 		

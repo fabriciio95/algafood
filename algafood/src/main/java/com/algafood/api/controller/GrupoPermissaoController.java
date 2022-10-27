@@ -20,7 +20,7 @@ import com.algafood.domain.model.Grupo;
 import com.algafood.domain.service.CadastroGrupoService;
 
 @RestController
-@RequestMapping(path = "/grupos/{grupoId}/permissoes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/grupos/{grupoId}/permissoes")
 public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi {
 
 	@Autowired
@@ -30,7 +30,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	private PermissaoDTOAssembler permissaoDTOAssembler;
 	
 	
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<PermissaoDTO> listar(@PathVariable Long grupoId) {
 		Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
 		

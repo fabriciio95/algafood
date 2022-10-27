@@ -33,7 +33,7 @@ import com.algafood.domain.repository.FormaPagamentoRepository;
 import com.algafood.domain.service.CadastroFormaPagamentoService;
 
 @RestController
-@RequestMapping(path = "/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/formas-pagamento")
 public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
 
 	@Autowired
@@ -48,7 +48,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 	@Autowired
 	private CadastroFormaPagamentoService cadastroFormaPagamentoService;
 	
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
 		
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -73,7 +73,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 							 .body(formasPagamento);
 	}
 	
-	@GetMapping("/{formaPagamentoId}")
+	@GetMapping(path = "/{formaPagamentoId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId, ServletWebRequest request) {
 		
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -98,7 +98,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public FormaPagamentoDTO adicionar(@RequestBody @Valid FormaPagamentoInputDTO formaPagamentoInputDTO) {
 		
 		FormaPagamento formaPagamento = formaPagamentoDTODisassembler.toDomainObject(formaPagamentoInputDTO);
@@ -106,7 +106,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 		return formaPagamentoDTOAssembler.toDTO(cadastroFormaPagamentoService.salvar(formaPagamento));
 	}
 	
-	@PutMapping("/{formaPagamentoId}")
+	@PutMapping(path = "/{formaPagamentoId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public FormaPagamentoDTO atualizar(@PathVariable Long formaPagamentoId,
 			@RequestBody @Valid FormaPagamentoInputDTO formaPagamentoInputDTO) {
 		

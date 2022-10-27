@@ -31,7 +31,7 @@ import lombok.AllArgsConstructor;
 
 
 @RestController
-@RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/cidades")
 @AllArgsConstructor
 public class CidadeController implements CidadeControllerOpenApi {
 
@@ -43,18 +43,18 @@ public class CidadeController implements CidadeControllerOpenApi {
 	
 	private CidadeInputDTODisassembler cidadeInputDTODisassembler;
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<CidadeDTO> listar() {
 		return cidadeDTOAssembler.toListDTO(cidadeRepository.findAll());
 	}
 
-	@GetMapping("/{cidadeId}")
+	@GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeDTO buscar(@PathVariable Long cidadeId) {
 		return cidadeDTOAssembler.toDTO(cadastroCidade.buscarOuFalhar(cidadeId));
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeDTO adicionar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO) {
 		try {
 			
@@ -67,7 +67,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		}
 	}
 
-	@PutMapping("/{cidadeId}")
+	@PutMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeDTO atualizar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO,
 			@PathVariable Long cidadeId) {
 		

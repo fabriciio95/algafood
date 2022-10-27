@@ -29,7 +29,7 @@ import com.algafood.domain.service.CadastroProdutoService;
 import com.algafood.domain.service.CadastroRestauranteService;
 
 @RestController
-@RequestMapping(path = "/restaurantes/{restauranteId}/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/restaurantes/{restauranteId}/produtos")
 public class RestauranteProdutoController implements RestauranteProdutoControllerOpenApi {
 
 	@Autowired
@@ -47,7 +47,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	@Autowired
 	private ProdutoRepository produtoRepository;
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<ProdutoDTO> listar(@PathVariable Long restauranteId, @RequestParam(required = false) boolean incluirInativos) {
 		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 		List<Produto> todosProdutos;
@@ -60,14 +60,14 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		return produtoDTOAssembler.toListDTO(todosProdutos);
 	}
 	
-	@GetMapping("/{produtoId}")
+	@GetMapping(path = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ProdutoDTO buscarPorId(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Produto produto = cadastroProdutoService.buscarOuFalhar(restauranteId, produtoId);
 		
 		return produtoDTOAssembler.toDTO(produto);
 	}
 	
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoDTO adicionar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInputDTO produtoInputDTO) {
 		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
@@ -79,7 +79,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		return produtoDTOAssembler.toDTO(cadastroProdutoService.salvar(produto, restauranteId));
 	}
 	
-	@PutMapping("/{produtoId}")
+	@PutMapping(path = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ProdutoDTO atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
 				@RequestBody @Valid ProdutoInputDTO produtoInputDTO) {
 		
