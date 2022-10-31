@@ -21,6 +21,7 @@ import com.algafood.api.assembler.CidadeInputDTODisassembler;
 import com.algafood.api.model.CidadeDTO;
 import com.algafood.api.model.input.CidadeInputDTO;
 import com.algafood.api.openapi.controller.CidadeControllerOpenApi;
+import com.algafood.api.utils.ResourceUriHelper;
 import com.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Cidade;
@@ -60,7 +61,13 @@ public class CidadeController implements CidadeControllerOpenApi {
 			
 			Cidade cidade = cidadeInputDTODisassembler.toDomainObject(cidadeInputDTO);
 			
-			return cidadeDTOAssembler.toDTO(cadastroCidade.salvar(cidade));
+			cidade = cadastroCidade.salvar(cidade);
+			
+			CidadeDTO cidadeDTO = cidadeDTOAssembler.toDTO(cidade);
+			
+			ResourceUriHelper.addUriInResponseHeader(cidade.getId());
+			
+			return cidadeDTO;
 			
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
