@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,7 +53,17 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	@GetMapping("/{cidadeId}")
 	public CidadeDTO buscar(@PathVariable Long cidadeId) {
-		return cidadeDTOAssembler.toDTO(cadastroCidade.buscarOuFalhar(cidadeId));
+		 CidadeDTO cidadeDTO = cidadeDTOAssembler.toDTO(cadastroCidade.buscarOuFalhar(cidadeId));
+		 
+		 cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades/1"));
+		 
+		// cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades", IanaLinkRelations.COLLECTION));
+		 
+		 cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades", "cidades"));
+		 
+		 cidadeDTO.getEstado().add(new Link("http://api.algafood.local:8080/estados/1"));
+		 
+		 return cidadeDTO;
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
