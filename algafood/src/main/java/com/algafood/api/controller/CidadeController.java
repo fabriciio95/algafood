@@ -1,11 +1,11 @@
 package com.algafood.api.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,13 +55,24 @@ public class CidadeController implements CidadeControllerOpenApi {
 	public CidadeDTO buscar(@PathVariable Long cidadeId) {
 		 CidadeDTO cidadeDTO = cidadeDTOAssembler.toDTO(cadastroCidade.buscarOuFalhar(cidadeId));
 		 
-		 cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades/1"));
+		 cidadeDTO.add(linkTo(CidadeController.class)
+				 						.slash(cidadeDTO.getId())
+				 						.withSelfRel());
+		 
+		 //cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades/1"));
 		 
 		// cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades", IanaLinkRelations.COLLECTION));
 		 
-		 cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades", "cidades"));
+		// cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades", "cidades"));
 		 
-		 cidadeDTO.getEstado().add(new Link("http://api.algafood.local:8080/estados/1"));
+		 cidadeDTO.add(linkTo(CidadeController.class)
+				 						.withRel("cidades"));
+		 
+		// cidadeDTO.getEstado().add(new Link("http://api.algafood.local:8080/estados/1"));
+		 
+		 cidadeDTO.getEstado().add(linkTo(EstadoController.class)
+				 									.slash(cidadeDTO.getEstado().getId())
+				 									.withSelfRel());
 		 
 		 return cidadeDTO;
 	}
