@@ -1,11 +1,13 @@
 package com.algafood.api.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,8 +49,24 @@ public class CidadeController implements CidadeControllerOpenApi {
 	private CidadeInputDTODisassembler cidadeInputDTODisassembler;
 
 	@GetMapping
-	public List<CidadeDTO> listar() {
-		return cidadeDTOAssembler.toListDTO(cidadeRepository.findAll());
+	public CollectionModel<CidadeDTO> listar() {
+		 List<CidadeDTO> cidadesDTO = cidadeDTOAssembler.toListDTO(cidadeRepository.findAll());
+		 
+		 CollectionModel<CidadeDTO> cidadesCollectionModel = new CollectionModel<>(cidadesDTO);
+		 
+		 cidadesCollectionModel.forEach(cidadeDTO -> {
+			 cidadeDTO.add(linkTo(methodOn(CidadeController.class)
+					 .buscar(cidadeDTO.getId())).withSelfRel());
+			 
+			 cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
+			 
+			 cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
+					 .buscar(cidadeDTO.getEstado().getId())).withSelfRel());
+		 });
+		 
+		 cidadesCollectionModel.add(linkTo(methodOn(CidadeController.class).listar()).withSelfRel());
+		 
+		 return cidadesCollectionModel;
 	}
 
 	@GetMapping("/{cidadeId}")

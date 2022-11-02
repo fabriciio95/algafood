@@ -1,6 +1,6 @@
 package com.algafood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.CidadeDTO;
@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 public interface CidadeControllerOpenApi {
 
 	@ApiOperation("Lista as cidades")
-	List<CidadeDTO> listar();
+	CollectionModel<CidadeDTO> listar();
 
 	@ApiResponses({ 
 		@ApiResponse(code = 400, message = "ID da cidade inválido", response = Problem.class),
