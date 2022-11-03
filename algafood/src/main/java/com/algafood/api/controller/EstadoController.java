@@ -1,9 +1,8 @@
 package com.algafood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,13 +40,13 @@ public class EstadoController implements EstadoControllerOpenApi {
 	private EstadoInputDTODisassembler estadoInputDTODisassembler;
 
 	@GetMapping
-	public List<EstadoDTO> listar() {
-		return estadoDTOAssembler.toListDTO(estadoRepository.findAll());
+	public CollectionModel<EstadoDTO> listar() {
+		return estadoDTOAssembler.toCollectionModel(estadoRepository.findAll());
 	}
 
 	@GetMapping("/{estadoId}")
 	public EstadoDTO buscar(@PathVariable Long estadoId) {
-		return estadoDTOAssembler.toDTO(cadastroEstado.buscarOuFalhar(estadoId));
+		return estadoDTOAssembler.toModel(cadastroEstado.buscarOuFalhar(estadoId));
 	}
 
 	@PostMapping
@@ -56,7 +55,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 		
 		Estado estado = estadoInputDTODisassembler.toDomainObject(estadoInputDTO);
 		
-		return estadoDTOAssembler.toDTO(estadoRepository.save(estado));
+		return estadoDTOAssembler.toModel(estadoRepository.save(estado));
 	}
 
 	@PutMapping("/{estadoId}")
@@ -65,7 +64,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 		
 		estadoInputDTODisassembler.copyToDomainObject(estadoInputDTO, estadoAtual);
 
-		return estadoDTOAssembler.toDTO(cadastroEstado.salvar(estadoAtual));
+		return estadoDTOAssembler.toModel(cadastroEstado.salvar(estadoAtual));
 
 	}
 

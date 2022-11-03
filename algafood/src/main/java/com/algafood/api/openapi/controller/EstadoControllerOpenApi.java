@@ -1,6 +1,6 @@
 package com.algafood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.EstadoDTO;
@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 public interface EstadoControllerOpenApi {
 
 	@ApiOperation("Lista os estados")
-	List<EstadoDTO> listar();
+	CollectionModel<EstadoDTO> listar();
 
 	@ApiResponses({
 		@ApiResponse(code = 404, message = "Estado não encontrado", response = Problem.class),
