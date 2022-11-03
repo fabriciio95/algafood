@@ -3,15 +3,19 @@ package com.algafood.api.model;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import com.algafood.domain.model.StatusPedido;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@Relation(collectionRelation = "pedidos")
 @Getter
 @Setter
-public class PedidoResumoDTO {
+public class PedidoResumoDTO extends RepresentationModel<PedidoResumoDTO> {
 
 	@ApiModelProperty(example = "313c828d-5787-4689-aaf4-e94678446682")
 	private String codigo;

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.algafood.domain.model.StatusPedido;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +14,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PedidoDTO {
+public class PedidoDTO extends RepresentationModel<PedidoDTO> {
 
 	@ApiModelProperty(example = "313c828d-5787-4689-aaf4-e94678446682")
 	private String codigo;
