@@ -1,10 +1,9 @@
 package com.algafood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,13 +44,13 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	
 	
 	@GetMapping
-	public List<UsuarioDTO> listar() {
-		return usuarioDTOAssembler.toListDTO(usuarioRepository.findAll());
+	public CollectionModel<UsuarioDTO> listar() {
+		return usuarioDTOAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
 	
 	@GetMapping("/{usuarioId}")
 	public UsuarioDTO buscarPorId(@PathVariable Long usuarioId) {
-		return usuarioDTOAssembler.toDTO(cadastroUsuarioService.buscarOuFalhar(usuarioId));
+		return usuarioDTOAssembler.toModel(cadastroUsuarioService.buscarOuFalhar(usuarioId));
 	}
 	
 	@PostMapping
@@ -59,7 +58,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	public UsuarioDTO adicionar(@RequestBody @Valid UsuarioComSenhaInputDTO usuarioInputDTO) {
 		Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInputDTO);
 		
-		return usuarioDTOAssembler.toDTO(cadastroUsuarioService.salvar(usuario));
+		return usuarioDTOAssembler.toModel(cadastroUsuarioService.salvar(usuario));
 	}
 	
 	@PutMapping("/{usuarioId}")
@@ -68,7 +67,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		
 		usuarioInputDisassembler.copyToDomainObject(usuarioInputDTO, usuario);
 		
-		return usuarioDTOAssembler.toDTO(cadastroUsuarioService.salvar(usuario));
+		return usuarioDTOAssembler.toModel(cadastroUsuarioService.salvar(usuario));
 	}
 	
 	@PutMapping("/{usuarioId}/senha")

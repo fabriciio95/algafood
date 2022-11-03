@@ -1,6 +1,6 @@
 package com.algafood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.UsuarioDTO;
@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiResponses;
 public interface UsuarioControllerOpenApi {
 
 	@ApiOperation("Lista os usuários")
-	List<UsuarioDTO> listar();
+	CollectionModel<UsuarioDTO> listar();
 
 	@ApiResponses({
 		@ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class),
