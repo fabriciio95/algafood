@@ -27,6 +27,7 @@ import com.algafood.api.model.PedidoDTO;
 import com.algafood.api.model.PedidoResumoDTO;
 import com.algafood.api.model.input.PedidoInputDTO;
 import com.algafood.api.openapi.controller.PedidoControllerOpenApI;
+import com.algafood.core.data.PageWrapper;
 import com.algafood.core.data.PageableTranslator;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.exception.NegocioException;
@@ -62,10 +63,12 @@ public class PedidoController implements PedidoControllerOpenApI {
 	
 	@GetMapping
 	public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
-		pageable = traduzirPageable(pageable);
+		Pageable pageableTraduzido = traduzirPageable(pageable);
 		
-		Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
+		Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageableTraduzido);
 		
+		pedidosPage = new PageWrapper<>(pedidosPage, pageable);
+				
 		return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoDTOAssembler);
 	}	
 	
