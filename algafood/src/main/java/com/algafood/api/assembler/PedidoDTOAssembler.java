@@ -65,10 +65,16 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 				new TemplateVariable("size", VariableType.REQUEST_PARAM),
 				new TemplateVariable("sort", VariableType.REQUEST_PARAM));
 		
+		TemplateVariables filtroVariables = new TemplateVariables(
+				new TemplateVariable("clienteId", VariableType.REQUEST_PARAM),
+				new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+				new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+				new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM));
+		
 		String pedidosUrl = linkTo(PedidoController.class).toUri().toString();
 		
 		pedidoDTO.add(new Link(UriTemplate.of(pedidosUrl, 
-				pageVariables), "pedidos"));
+				pageVariables.concat(filtroVariables)), "pedidos"));
 		
 		return pedidoDTO;
 	}
