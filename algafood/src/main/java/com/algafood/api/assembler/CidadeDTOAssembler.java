@@ -1,8 +1,5 @@
 package com.algafood.api.assembler;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -10,19 +7,22 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import com.algafood.api.controller.CidadeController;
-import com.algafood.api.controller.EstadoController;
 import com.algafood.api.model.CidadeDTO;
+import com.algafood.api.utils.AlgaLinks;
 import com.algafood.domain.model.Cidade;
 
 @Component
 public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cidade, CidadeDTO>{
 
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	private AlgaLinks algaLinks;
+	
 	public CidadeDTOAssembler() {
 		super(CidadeController.class, CidadeDTO.class);
 	}
-
-	@Autowired
-	private ModelMapper modelMapper;
 	
 	@Override
 	public CidadeDTO toModel(Cidade cidade) {
@@ -35,10 +35,9 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
 //		 cidadeDTO.add(linkTo(methodOn(CidadeController.class)
 //				 .buscar(cidadeDTO.getId())).withSelfRel());
 		 
-		 cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
+		 cidadeDTO.add(algaLinks.linkToCidades("cidades"));
 		 
-		 cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
-				 .buscar(cidadeDTO.getEstado().getId())).withSelfRel());
+		 cidadeDTO.getEstado().add(algaLinks.linkToEstado(cidadeDTO.getEstado().getId()));
 		 
 		 return cidadeDTO;
 	}
@@ -46,6 +45,6 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
 	@Override
 	public CollectionModel<CidadeDTO> toCollectionModel(Iterable<? extends Cidade> entities) {
 		return super.toCollectionModel(entities)
-					.add(linkTo(methodOn(CidadeController.class).listar()).withSelfRel());
+					.add(algaLinks.linkToCidades());
 	}
 }

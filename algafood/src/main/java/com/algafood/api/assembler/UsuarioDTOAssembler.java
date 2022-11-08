@@ -1,8 +1,5 @@
 package com.algafood.api.assembler;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -10,19 +7,22 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import com.algafood.api.controller.UsuarioController;
-import com.algafood.api.controller.UsuarioGrupoController;
 import com.algafood.api.model.UsuarioDTO;
+import com.algafood.api.utils.AlgaLinks;
 import com.algafood.domain.model.Usuario;
 
 @Component
 public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usuario, UsuarioDTO>{
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	private AlgaLinks algaLinks;
 
 	public UsuarioDTOAssembler() {
 		super(UsuarioController.class, UsuarioDTO.class);
 	}
-
-	@Autowired
-	private ModelMapper modelMapper;
 	
 	@Override
 	public UsuarioDTO toModel(Usuario usuario) {
@@ -30,10 +30,9 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
 		
 		modelMapper.map(usuario, usuarioDTO);
 		
-		usuarioDTO.add(linkTo(methodOn(UsuarioController.class).listar()).withRel("usuarios"));
+		usuarioDTO.add(algaLinks.linkToUsuarios("usuarios"));
 		
-		usuarioDTO.add(linkTo(methodOn(UsuarioGrupoController.class)
-						.listar(usuario.getId())).withRel("grupos-usuario"));
+		usuarioDTO.add(algaLinks.linkToGruposUsuarios(usuarioDTO.getId(), "grupos-usuario"));
 		
 		return usuarioDTO;
 	}
@@ -41,6 +40,6 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
 	@Override
 	public CollectionModel<UsuarioDTO> toCollectionModel(Iterable<? extends Usuario> entities) {
 		return super.toCollectionModel(entities)
-					.add(linkTo(methodOn(UsuarioController.class).listar()).withSelfRel());
+					.add(algaLinks.linkToUsuarios());
 	}
 }
