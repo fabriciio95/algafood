@@ -44,6 +44,12 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 		
 		pedidoDTO.add(algaLinks.linkToPedidos());
 		
+		pedidoDTO.add(algaLinks.linkToConfirmacaoPedido(pedidoDTO.getCodigo(), "confirmar"));
+		
+		pedidoDTO.add(algaLinks.linkToCancelamentoPedido(pedidoDTO.getCodigo(), "cancelar"));
+		
+		pedidoDTO.add(algaLinks.linkToEntregaPedido(pedidoDTO.getCodigo(), "entregar"));
+		
 		return pedidoDTO;
 	}
 }
