@@ -43,7 +43,7 @@ public class PedidoDTO extends RepresentationModel<PedidoDTO> {
 	@ApiModelProperty(example = "2022-10-20T10:00:00Z")
 	private OffsetDateTime dataCancelamento;
 	
-	private RestauranteResumoDTO restaurante;
+	private RestauranteApenasNomeDTO restaurante;
 	
 	private UsuarioDTO cliente;
 	

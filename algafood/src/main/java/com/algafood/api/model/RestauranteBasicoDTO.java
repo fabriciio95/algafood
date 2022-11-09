@@ -1,5 +1,7 @@
 package com.algafood.api.model;
 
+import java.math.BigDecimal;
+
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
@@ -7,16 +9,19 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-@Relation(collectionRelation = "cozinhas")
+@Relation(collectionRelation = "restaurantes")
 @Getter
 @Setter
-public class CozinhaDTO extends RepresentationModel<CozinhaDTO> {
-
+public class RestauranteBasicoDTO extends RepresentationModel<RestauranteBasicoDTO> {
+	
 	@ApiModelProperty(example = "1")
-	//@JsonView(RestauranteView.Resumo.class)
 	private Long id;
 	
-	@ApiModelProperty(example = "Italiana")
-	//@JsonView(RestauranteView.Resumo.class)
+	@ApiModelProperty(example = "Thai Gourmet")
 	private String nome;
+	
+	@ApiModelProperty(example = "12.00")
+	private BigDecimal taxaFrete;
+	
+	private CozinhaDTO cozinha;
 }

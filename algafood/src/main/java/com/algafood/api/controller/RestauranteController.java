@@ -9,9 +9,11 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -28,11 +30,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algafood.api.assembler.RestauranteApenasNomeDTOAssembler;
+import com.algafood.api.assembler.RestauranteBasicoDTOAssembler;
 import com.algafood.api.assembler.RestauranteDTOAssembler;
 import com.algafood.api.assembler.RestauranteInputDTODisassembler;
+import com.algafood.api.model.RestauranteApenasNomeDTO;
+import com.algafood.api.model.RestauranteBasicoDTO;
 import com.algafood.api.model.RestauranteDTO;
 import com.algafood.api.model.input.RestauranteInputDTO;
-import com.algafood.api.model.view.RestauranteView;
 import com.algafood.api.openapi.controller.RestauranteControllerOpenApi;
 import com.algafood.core.validation.ValidacaoException;
 import com.algafood.domain.exception.CidadeNaoEncontradaException;
@@ -42,7 +47,6 @@ import com.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.RestauranteRepository;
 import com.algafood.domain.service.CadastroRestauranteService;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -64,18 +68,24 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	
 	@Autowired
 	private RestauranteInputDTODisassembler restauranteInputDtoDisassembler;
+	
+	@Autowired
+	private RestauranteBasicoDTOAssembler restauranteBasicoDTOAssembler;
+	
+	@Autowired
+	private RestauranteApenasNomeDTOAssembler restauranteApenasNomeDTOAssembler;
 
 	
-	@JsonView(RestauranteView.Resumo.class)
+	//@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
-	public List<RestauranteDTO> listar() {
-		return restauranteDTOAssembler.toListDTO(restauranteRepository.findAll());
+	public CollectionModel<RestauranteBasicoDTO> listar() {
+		return restauranteBasicoDTOAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 	
-	@JsonView(RestauranteView.ApenasNome.class)
+	//@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
-	public List<RestauranteDTO> listarApenasNomes() {
-		return listar();
+	public CollectionModel<RestauranteApenasNomeDTO> listarApenasNomes() {
+		return restauranteApenasNomeDTOAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 	
 
@@ -83,7 +93,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
 	   Restaurante restaurante =  cadastroRestaurante.buscarOuFalhar(restauranteId);
 	   	     
-	   return restauranteDTOAssembler.toDTO(restaurante);
+	   return restauranteDTOAssembler.toModel(restaurante);
 	}
 	
 
@@ -94,7 +104,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 			
 			Restaurante restaurante = restauranteInputDtoDisassembler.toDomainObject(restauranteInputDTO);
 
-			return restauranteDTOAssembler.toDTO(cadastroRestaurante.salvar(restaurante));
+			return restauranteDTOAssembler.toModel(cadastroRestaurante.salvar(restaurante));
 
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -111,7 +121,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 		try {
 
-			return restauranteDTOAssembler.toDTO(cadastroRestaurante.salvar(restauranteAtual));
+			return restauranteDTOAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
 
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -120,14 +130,18 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/ativo")
-	public void ativar(@PathVariable Long restauranteId) {
+	public ResponseEntity<Void> ativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.ativar(restauranteId);
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{restauranteId}/ativo")
-	public void inativar(@PathVariable Long restauranteId) {
+	public ResponseEntity<Void> inativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.inativar(restauranteId);
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -152,14 +166,18 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/fechamento")
-	public void fechar(@PathVariable Long restauranteId) {
+	public ResponseEntity<Void> fechar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.fecharRestaurante(restauranteId);
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/abertura")
-	public void abrir(@PathVariable Long restauranteId) {
+	public ResponseEntity<Void> abrir(@PathVariable Long restauranteId) {
 		cadastroRestaurante.abrirRestaurante(restauranteId);
+		
+		return ResponseEntity.noContent().build();
 	}
 
 
