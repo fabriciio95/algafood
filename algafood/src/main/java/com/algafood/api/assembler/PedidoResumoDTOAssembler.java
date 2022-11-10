@@ -33,7 +33,7 @@ public class PedidoResumoDTOAssembler extends RepresentationModelAssemblerSuppor
 
 		pedidoResumoDTO.getCliente().add(algaLinks.linkToUsuario(pedidoResumoDTO.getCliente().getId()));
 
-		pedidoResumoDTO.add(algaLinks.linkToPedidos());
+		pedidoResumoDTO.add(algaLinks.linkToPedidos("pedidos"));
 		
 		return pedidoResumoDTO;
 	}

@@ -31,8 +31,12 @@ public class AlgaLinks {
 			new TemplateVariable("page", VariableType.REQUEST_PARAM),
 			new TemplateVariable("size", VariableType.REQUEST_PARAM),
 			new TemplateVariable("sort", VariableType.REQUEST_PARAM));
+	
+	private static final TemplateVariables PROJECAO_VARIABLES = new TemplateVariables(
+			new TemplateVariable("projecao", VariableType.REQUEST_PARAM)
+	);
 
-	public Link linkToPedidos() {
+	public Link linkToPedidos(String rel) {
 		// pedidoDTO.add(linkTo(PedidoController.class).withRel("pedidos"));
 
 		TemplateVariables filtroVariables = new TemplateVariables(
@@ -43,7 +47,7 @@ public class AlgaLinks {
 
 		String pedidosUrl = linkTo(PedidoController.class).toUri().toString();
 
-		return new Link(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filtroVariables)), "pedidos");
+		return new Link(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
 	}
 	
 	public Link linkToRestaurante(Long restauranteId, String rel) {
@@ -164,8 +168,10 @@ public class AlgaLinks {
 		return linkToCozinha(cozinhaId, IanaLinkRelations.SELF.value());
 	}
 	
-	public Link linkToRestaurantes(String rel) {
-		return linkTo(methodOn(RestauranteController.class).listar()).withRel(rel);
+	public Link linkToRestaurantes(String rel) {		
+		String restaurantesUrl = linkTo(methodOn(RestauranteController.class).listar()).toUri().toString();
+		
+		return new Link(UriTemplate.of(restaurantesUrl, PROJECAO_VARIABLES), rel);
 	}
 	
 	public Link linkToRestaurantes() {
