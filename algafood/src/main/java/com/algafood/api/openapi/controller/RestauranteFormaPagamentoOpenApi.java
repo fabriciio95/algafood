@@ -1,6 +1,6 @@
 package com.algafood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.FormaPagamentoDTO;
@@ -18,7 +18,7 @@ public interface RestauranteFormaPagamentoOpenApi {
 		@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
 	})
 	@ApiOperation("Lista as formas de pagamento associados a restaurante")
-	List<FormaPagamentoDTO> listar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long restauranteId);
+	CollectionModel<FormaPagamentoDTO> listar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long restauranteId);
 
 	@ApiResponses({
 		@ApiResponse(code = 404, message = "Restaurante ou forma de pagamento não encontrado", response = Problem.class),

@@ -1,7 +1,6 @@
 package com.algafood.api.openapi.controller;
 
-import java.util.List;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -19,7 +18,7 @@ import io.swagger.annotations.ApiResponses;
 public interface FormaPagamentoControllerOpenApi {
 
 	@ApiOperation("Lista as formas de pagamentos")
-	ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request);
+	ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request);
 
 	@ApiResponses({
 		@ApiResponse(code = 400, message = "ID da forma de pagamento inválido", response = Problem.class),

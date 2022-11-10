@@ -201,5 +201,13 @@ public class AlgaLinks {
 	public Link linkToRestauranteFechamento(Long restauranteId, String rel) {
 		return linkTo(methodOn(RestauranteController.class).fechar(restauranteId)).withRel(rel);
 	}
+	
+	public Link linkToFormasPagamento(String rel) {
+		return linkTo(methodOn(FormaPagamentoController.class).listar(null)).withRel(rel);
+	}
+	
+	public Link linkToFormasPagamento() {
+		return linkToFormasPagamento(IanaLinkRelations.SELF.value());
+	}
 }
 
