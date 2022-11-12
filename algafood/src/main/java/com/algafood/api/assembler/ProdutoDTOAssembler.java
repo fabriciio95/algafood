@@ -2,7 +2,6 @@ package com.algafood.api.assembler;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +18,7 @@ public class ProdutoDTOAssembler extends RepresentationModelAssemblerSupport<Pro
 	
 	@Autowired
 	private AlgaLinks algaLinks;
-	
-	private Long restauranteId;
-	
+		
 	public ProdutoDTOAssembler() {
 		super(RestauranteProdutoController.class, ProdutoDTO.class);
 	}
@@ -33,15 +30,10 @@ public class ProdutoDTOAssembler extends RepresentationModelAssemblerSupport<Pro
 		
 		produtoDTO.add(algaLinks.linkToRestauranteProdutos(produto.getRestaurante().getId(), "produtos"));
 		
-		restauranteId = produto.getRestaurante().getId();
-		
+		produtoDTO.add(algaLinks.linkToFotoProduto(produto.getRestaurante().getId(),
+				produto.getId(), "foto"));
+				
 		return produtoDTO;
-	}
-	
-	@Override
-	public CollectionModel<ProdutoDTO> toCollectionModel(Iterable<? extends Produto> entities) {
-		return super.toCollectionModel(entities)
-				.add(algaLinks.linkToRestauranteProdutos(restauranteId));
 	}
 }
 

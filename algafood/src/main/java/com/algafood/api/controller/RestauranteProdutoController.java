@@ -23,6 +23,7 @@ import com.algafood.api.assembler.ProdutoDTODisassembler;
 import com.algafood.api.model.ProdutoDTO;
 import com.algafood.api.model.input.ProdutoInputDTO;
 import com.algafood.api.openapi.controller.RestauranteProdutoControllerOpenApi;
+import com.algafood.api.utils.AlgaLinks;
 import com.algafood.domain.model.Produto;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.ProdutoRepository;
@@ -47,6 +48,9 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private AlgaLinks algaLinks;
 
 	@GetMapping
 	public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId, @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
@@ -58,7 +62,8 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 			todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
 		}
 		
-		return produtoDTOAssembler.toCollectionModel(todosProdutos);
+		return produtoDTOAssembler.toCollectionModel(todosProdutos)
+				.add(algaLinks.linkToRestauranteProdutos(restauranteId));
 	}
 	
 	@GetMapping("/{produtoId}")
