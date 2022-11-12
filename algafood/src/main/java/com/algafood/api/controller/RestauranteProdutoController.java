@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +49,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	private ProdutoRepository produtoRepository;
 
 	@GetMapping
-	public List<ProdutoDTO> listar(@PathVariable Long restauranteId, @RequestParam(required = false) boolean incluirInativos) {
+	public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId, @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
 		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 		List<Produto> todosProdutos;
 		if(incluirInativos) {
@@ -57,14 +58,14 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 			todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
 		}
 		
-		return produtoDTOAssembler.toListDTO(todosProdutos);
+		return produtoDTOAssembler.toCollectionModel(todosProdutos);
 	}
 	
 	@GetMapping("/{produtoId}")
 	public ProdutoDTO buscarPorId(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Produto produto = cadastroProdutoService.buscarOuFalhar(restauranteId, produtoId);
 		
-		return produtoDTOAssembler.toDTO(produto);
+		return produtoDTOAssembler.toModel(produto);
 	}
 	
 	@PostMapping
@@ -76,7 +77,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		
 		produto.setRestaurante(restaurante);
 		
-		return produtoDTOAssembler.toDTO(cadastroProdutoService.salvar(produto, restauranteId));
+		return produtoDTOAssembler.toModel(cadastroProdutoService.salvar(produto, restauranteId));
 	}
 	
 	@PutMapping("/{produtoId}")
@@ -89,6 +90,6 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		
 		produtoDisassembler.copyToDomainObject(produtoInputDTO, produto);
 		
-		return produtoDTOAssembler.toDTO(cadastroProdutoService.salvar(produto, restaurante.getId()));
+		return produtoDTOAssembler.toModel(cadastroProdutoService.salvar(produto, restaurante.getId()));
 	}
 }

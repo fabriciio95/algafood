@@ -229,5 +229,13 @@ public class AlgaLinks {
 		return linkTo(methodOn(RestauranteUsuarioController.class)
 				.associarResponsavel(restauranteId, null)).withRel(rel);
 	}
+	
+	public Link linkToRestauranteProdutos(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteProdutoController.class).listar(restauranteId, null)).withRel(rel);
+	}
+	
+	public Link linkToRestauranteProdutos(Long restauranteId) {
+		return linkToRestauranteProdutos(restauranteId, IanaLinkRelations.SELF.value());
+	}
 }
 

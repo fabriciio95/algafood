@@ -32,14 +32,17 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
 		 
 		 restauranteDTO.getCozinha().add(algaLinks.linkToCozinha(restauranteDTO.getCozinha().getId()));
 		 
-		 restauranteDTO.getEndereco().getCidade()
-		 				.add(algaLinks.linkToCidade(restauranteDTO.getEndereco().getCidade().getId()));
+		 if(restauranteDTO.getEndereco() != null && restauranteDTO.getEndereco().getCidade() != null)
+			 	restauranteDTO.getEndereco().getCidade()
+		 					.add(algaLinks.linkToCidade(restauranteDTO.getEndereco().getCidade().getId()));
 		 
 		 restauranteDTO.add(algaLinks.linkToRestaurantes("restaurantes"));
 		 
 		 restauranteDTO.add(algaLinks.linkToRestauranteFormasPagamento(restauranteDTO.getId(), "formas-pagamento"));
 		 
 		 restauranteDTO.add(algaLinks.linkToResponsaveisRestaurante(restauranteDTO.getId(), "responsaveis"));
+		 
+		 restauranteDTO.add(algaLinks.linkToRestauranteProdutos(restauranteDTO.getId(), "produtos"));
 		 
 		 if(restaurante.fechamentoPermitido()) 
 			 restauranteDTO.add(algaLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
@@ -52,6 +55,7 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
 		 
 		 if(restaurante.ativacaoPermitida())
 			 restauranteDTO.add(algaLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+		  
 		 
 		 return restauranteDTO;
 	}
