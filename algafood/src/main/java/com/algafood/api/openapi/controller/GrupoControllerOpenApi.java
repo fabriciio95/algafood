@@ -1,6 +1,6 @@
 package com.algafood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.GrupoDTO;
@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 public interface GrupoControllerOpenApi {
 
 	@ApiOperation("Lista os grupos")
-	List<GrupoDTO> listar();
+	CollectionModel<GrupoDTO> listar();
 
 	@ApiResponses({
 		@ApiResponse(code = 400, message = "ID de grupo inválido", response = Problem.class),

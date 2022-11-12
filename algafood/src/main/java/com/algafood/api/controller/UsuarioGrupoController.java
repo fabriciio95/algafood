@@ -1,8 +1,7 @@
 package com.algafood.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,10 +29,11 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 	private CadastroUsuarioService cadastroUsuarioService;
 	
 	@GetMapping
-	public List<GrupoDTO> listar(@PathVariable Long usuarioId) {
+	public CollectionModel<GrupoDTO> listar(@PathVariable Long usuarioId) {
 		Usuario usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
 		
-		return grupoDTOAssembler.toListDTO(usuario.getGrupos());
+		return grupoDTOAssembler.toCollectionModel(usuario.getGrupos())
+				.removeLinks();
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
