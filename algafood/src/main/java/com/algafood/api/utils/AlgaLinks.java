@@ -297,5 +297,14 @@ public class AlgaLinks {
 	public Link linkToGrupoPermissaoDesassociacao(Long grupoId, Long permissaoId, String rel) {
 		return linkTo(methodOn(GrupoPermissaoController.class).desassociar(grupoId, permissaoId)).withRel(rel);
 	}
+	
+	public Link linkToUsuarioGrupoAssociacao(Long usuarioId, String rel) {
+		return linkTo(methodOn(UsuarioGrupoController.class).asociarGrupo(usuarioId, null)).withRel(rel);
+	}
+	
+	public Link linkToUsuarioGrupoDesassociacao(Long usuarioid, Long grupoId, String rel) {
+		return linkTo(methodOn(UsuarioGrupoController.class).desasociarGrupo(usuarioid, grupoId)).withRel(rel);
+	}
+	
 }
 
