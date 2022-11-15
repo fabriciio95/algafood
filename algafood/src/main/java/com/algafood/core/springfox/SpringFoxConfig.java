@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,8 +25,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algafood.api.exceptionhandler.Problem;
+import com.algafood.api.model.CidadeDTO;
 import com.algafood.api.model.CozinhaDTO;
 import com.algafood.api.model.PedidoResumoDTO;
+import com.algafood.api.openapi.model.CidadesModelOpenApi;
 import com.algafood.api.openapi.model.CozinhasDTOOpenApi;
 import com.algafood.api.openapi.model.EnderecoInputModelOpenApi;
 import com.algafood.api.openapi.model.LinksModelOpenApi;
@@ -86,7 +89,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
 				.alternateTypeRules(
 						AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class), CozinhasDTOOpenApi.class),
-						AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class))
+						AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class),
+						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, CidadeDTO.class), CidadesModelOpenApi.class))
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 					  new Tag("Grupos", "Gerencia os grupos"),
