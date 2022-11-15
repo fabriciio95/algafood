@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.algafood.api.controller.EstatisticasController.EstatisticasModel;
 import com.algafood.domain.filter.VendaDiariaFilter;
 import com.algafood.domain.model.dto.VendaDiaria;
 
@@ -15,6 +16,9 @@ import io.swagger.annotations.ApiParam;
 
 @Api(tags = "Estatísticas")
 public interface EstatisticasControllerOpenApi {
+	
+	@ApiOperation(value = "Estatísticas", hidden = true)
+	EstatisticasModel estatisticas();
 
 	@ApiImplicitParams({
 		@ApiImplicitParam(value = "Data/hora final da criação do pedido", name = "dataCriacaoFim", 
