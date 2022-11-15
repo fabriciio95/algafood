@@ -7,6 +7,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.FormaPagamentoDTO;
 import com.algafood.api.model.input.FormaPagamentoInputDTO;
+import com.algafood.api.openapi.model.FormasPagamentoModelOpenApi;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +18,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "Formas de Pagamento")
 public interface FormaPagamentoControllerOpenApi {
 
-	@ApiOperation("Lista as formas de pagamentos")
+	@ApiOperation(value = "Lista as formas de pagamentos", response = FormasPagamentoModelOpenApi.class)
 	ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request);
 
 	@ApiResponses({
