@@ -29,14 +29,18 @@ import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.CidadeDTO;
 import com.algafood.api.model.CozinhaDTO;
 import com.algafood.api.model.EstadoDTO;
+import com.algafood.api.model.GrupoDTO;
 import com.algafood.api.model.PedidoResumoDTO;
+import com.algafood.api.model.PermissaoDTO;
 import com.algafood.api.openapi.model.CidadesModelOpenApi;
 import com.algafood.api.openapi.model.CozinhasDTOOpenApi;
 import com.algafood.api.openapi.model.EnderecoInputModelOpenApi;
 import com.algafood.api.openapi.model.EstadosModelOpenApi;
+import com.algafood.api.openapi.model.GruposModelOpenApi;
 import com.algafood.api.openapi.model.LinksModelOpenApi;
 import com.algafood.api.openapi.model.PageableModelOpenApi;
 import com.algafood.api.openapi.model.PedidosResumoDTOOpenApi;
+import com.algafood.api.openapi.model.PermissoesModelOpenApi;
 import com.algafood.api.openapi.model.RestauranteInputModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 
@@ -94,7 +98,9 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, CozinhaDTO.class), CozinhasDTOOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoDTO.class), PedidosResumoDTOOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, CidadeDTO.class), CidadesModelOpenApi.class),
-						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, EstadoDTO.class), EstadosModelOpenApi.class))
+						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, EstadoDTO.class), EstadosModelOpenApi.class),
+						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, GrupoDTO.class), GruposModelOpenApi.class),
+						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, PermissaoDTO.class), PermissoesModelOpenApi.class))
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 					  new Tag("Grupos", "Gerencia os grupos"),
