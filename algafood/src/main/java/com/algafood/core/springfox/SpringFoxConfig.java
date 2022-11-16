@@ -28,6 +28,7 @@ import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.model.CidadeDTO;
 import com.algafood.api.model.CozinhaDTO;
 import com.algafood.api.model.EstadoDTO;
+import com.algafood.api.model.FormaPagamentoDTO;
 import com.algafood.api.model.GrupoDTO;
 import com.algafood.api.model.PedidoResumoDTO;
 import com.algafood.api.model.PermissaoDTO;
@@ -38,6 +39,7 @@ import com.algafood.api.openapi.model.CidadesModelOpenApi;
 import com.algafood.api.openapi.model.CozinhasDTOOpenApi;
 import com.algafood.api.openapi.model.EnderecoInputModelOpenApi;
 import com.algafood.api.openapi.model.EstadosModelOpenApi;
+import com.algafood.api.openapi.model.FormasPagamentoModelOpenApi;
 import com.algafood.api.openapi.model.GruposModelOpenApi;
 import com.algafood.api.openapi.model.LinksModelOpenApi;
 import com.algafood.api.openapi.model.PageableModelOpenApi;
@@ -104,6 +106,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, PedidoResumoDTO.class), PedidosResumoModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, CidadeDTO.class), CidadesModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, EstadoDTO.class), EstadosModelOpenApi.class),
+						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class), FormasPagamentoModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, GrupoDTO.class), GruposModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, PermissaoDTO.class), PermissoesModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, ProdutoDTO.class), ProdutosModelOpenApi.class),
