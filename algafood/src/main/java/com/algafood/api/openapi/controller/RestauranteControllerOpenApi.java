@@ -13,7 +13,7 @@ import com.algafood.api.model.RestauranteApenasNomeDTO;
 import com.algafood.api.model.RestauranteBasicoDTO;
 import com.algafood.api.model.RestauranteDTO;
 import com.algafood.api.model.input.RestauranteInputDTO;
-import com.algafood.api.openapi.model.RestauranteBasicoModelOpenApi;
+import com.algafood.api.openapi.model.RestaurantesBasicoModelOpenApi;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,7 +30,7 @@ public interface RestauranteControllerOpenApi {
 		@ApiImplicitParam(value = "Nome da projeção de restaurantes", allowableValues = "apenas-nome",
 						  name = "projecao", paramType = "query", type = "string")
 	})
-	@ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoModelOpenApi.class)
+	@ApiOperation(value = "Lista restaurantes", response = RestaurantesBasicoModelOpenApi.class)
 	CollectionModel<RestauranteBasicoDTO> listar();
 
 	@ApiOperation(value = "Lista restaurantes", hidden = true)

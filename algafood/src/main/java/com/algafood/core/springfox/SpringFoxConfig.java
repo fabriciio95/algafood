@@ -32,6 +32,8 @@ import com.algafood.api.model.GrupoDTO;
 import com.algafood.api.model.PedidoResumoDTO;
 import com.algafood.api.model.PermissaoDTO;
 import com.algafood.api.model.ProdutoDTO;
+import com.algafood.api.model.RestauranteBasicoDTO;
+import com.algafood.api.model.UsuarioDTO;
 import com.algafood.api.openapi.model.CidadesModelOpenApi;
 import com.algafood.api.openapi.model.CozinhasDTOOpenApi;
 import com.algafood.api.openapi.model.EnderecoInputModelOpenApi;
@@ -43,6 +45,8 @@ import com.algafood.api.openapi.model.PedidosResumoModelOpenApi;
 import com.algafood.api.openapi.model.PermissoesModelOpenApi;
 import com.algafood.api.openapi.model.ProdutosModelOpenApi;
 import com.algafood.api.openapi.model.RestauranteInputModelOpenApi;
+import com.algafood.api.openapi.model.RestaurantesBasicoModelOpenApi;
+import com.algafood.api.openapi.model.UsuariosModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
@@ -102,7 +106,9 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, EstadoDTO.class), EstadosModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, GrupoDTO.class), GruposModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, PermissaoDTO.class), PermissoesModelOpenApi.class),
-						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, ProdutoDTO.class), ProdutosModelOpenApi.class))
+						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, ProdutoDTO.class), ProdutosModelOpenApi.class),
+						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, RestauranteBasicoDTO.class), RestaurantesBasicoModelOpenApi.class),
+						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, UsuarioDTO.class), UsuariosModelOpenApi.class))
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 					  new Tag("Grupos", "Gerencia os grupos"),
