@@ -12,39 +12,33 @@ import com.algafood.api.utils.AlgaLinks;
 import com.algafood.domain.model.Cidade;
 
 @Component
-public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cidade, CidadeDTO>{
+public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cidade, CidadeDTO> {
 
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
 	@Autowired
 	private AlgaLinks algaLinks;
-	
+
 	public CidadeDTOAssembler() {
 		super(CidadeController.class, CidadeDTO.class);
 	}
-	
+
 	@Override
 	public CidadeDTO toModel(Cidade cidade) {
 		CidadeDTO cidadeDTO = createModelWithId(cidade.getId(), cidade);
-		
+
 		modelMapper.map(cidade, cidadeDTO);
-		
-//		CidadeDTO cidadeDTO = modelMapper.map(cidade, CidadeDTO.class);
-		 
-//		 cidadeDTO.add(linkTo(methodOn(CidadeController.class)
-//				 .buscar(cidadeDTO.getId())).withSelfRel());
-		 
-		 cidadeDTO.add(algaLinks.linkToCidades("cidades"));
-		 
-		 cidadeDTO.getEstado().add(algaLinks.linkToEstado(cidadeDTO.getEstado().getId()));
-		 
-		 return cidadeDTO;
+
+		cidadeDTO.add(algaLinks.linkToCidades("cidades"));
+
+		cidadeDTO.getEstado().add(algaLinks.linkToEstado(cidadeDTO.getEstado().getId()));
+
+		return cidadeDTO;
 	}
-	
+
 	@Override
 	public CollectionModel<CidadeDTO> toCollectionModel(Iterable<? extends Cidade> entities) {
-		return super.toCollectionModel(entities)
-					.add(algaLinks.linkToCidades());
+		return super.toCollectionModel(entities).add(algaLinks.linkToCidades());
 	}
 }

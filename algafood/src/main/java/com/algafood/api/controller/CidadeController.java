@@ -29,7 +29,6 @@ import com.algafood.domain.service.CadastroCidadeService;
 
 import lombok.AllArgsConstructor;
 
-
 @RestController
 @RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
@@ -38,98 +37,58 @@ public class CidadeController implements CidadeControllerOpenApi {
 	private CidadeRepository cidadeRepository;
 
 	private CadastroCidadeService cadastroCidade;
-	
+
 	private CidadeDTOAssembler cidadeDTOAssembler;
-	
+
 	private CidadeInputDTODisassembler cidadeInputDTODisassembler;
 
 	@GetMapping
-	public CollectionModel<CidadeDTO> listar() {		 
-		 
-//		 cidadesCollectionModel.forEach(cidadeDTO -> {
-//			 cidadeDTO.add(linkTo(methodOn(CidadeController.class)
-//					 .buscar(cidadeDTO.getId())).withSelfRel());
-//			 
-//			 cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-//			 
-//			 cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
-//					 .buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-//		 });
-//		 
-//		 cidadesCollectionModel.add(linkTo(methodOn(CidadeController.class).listar()).withSelfRel());
-		 
-		 CollectionModel<CidadeDTO> cidadesCollectionModel = cidadeDTOAssembler.toCollectionModel(cidadeRepository.findAll());
+	public CollectionModel<CidadeDTO> listar() {
 
-		 return cidadesCollectionModel;
+		CollectionModel<CidadeDTO> cidadesCollectionModel = cidadeDTOAssembler
+				.toCollectionModel(cidadeRepository.findAll());
+
+		return cidadesCollectionModel;
 	}
 
 	@GetMapping("/{cidadeId}")
 	public CidadeDTO buscar(@PathVariable Long cidadeId) {
 
-		 
-//		 cidadeDTO.add(linkTo(methodOn(CidadeController.class)
-//				 .buscar(cidadeDTO.getId())).withSelfRel());
-//		 
-//		 
-////		 cidadeDTO.add(linkTo(CidadeController.class)
-////				 						.slash(cidadeDTO.getId())
-////				 						.withSelfRel());
-////		 
-//		 //cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades/1"));
-//		 
-//		// cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades", IanaLinkRelations.COLLECTION));
-//		 
-//		// cidadeDTO.add(new Link("http://api.algafood.local:8080/cidades", "cidades"));
-//		 
-////		 cidadeDTO.add(linkTo(CidadeController.class)
-////				 						.withRel("cidades"));
-//		 
-//		 cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-//		 
-//		// cidadeDTO.getEstado().add(new Link("http://api.algafood.local:8080/estados/1"));
-//		 
-////		 cidadeDTO.getEstado().add(linkTo(EstadoController.class)
-////				 									.slash(cidadeDTO.getEstado().getId())
-////				 									.withSelfRel());
-//
-//		 cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
-//				 .buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-		 CidadeDTO cidadeDTO = cidadeDTOAssembler.toModel(cadastroCidade.buscarOuFalhar(cidadeId));
-		 return cidadeDTO;
+		CidadeDTO cidadeDTO = cidadeDTOAssembler.toModel(cadastroCidade.buscarOuFalhar(cidadeId));
+		return cidadeDTO;
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public CidadeDTO adicionar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO) {
 		try {
-			
+
 			Cidade cidade = cidadeInputDTODisassembler.toDomainObject(cidadeInputDTO);
-			
+
 			cidade = cadastroCidade.salvar(cidade);
-			
+
 			CidadeDTO cidadeDTO = cidadeDTOAssembler.toModel(cidade);
-			
+
 			ResourceUriHelper.addUriInResponseHeader(cidade.getId());
-			
+
 			return cidadeDTO;
-			
+
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
 
 	@PutMapping("/{cidadeId}")
-	public CidadeDTO atualizar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO,
-			@PathVariable Long cidadeId) {
-		
+	public CidadeDTO atualizar(@RequestBody @Valid CidadeInputDTO cidadeInputDTO, @PathVariable Long cidadeId) {
+
 		Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
 
 		cidadeInputDTODisassembler.copyToDomainObject(cidadeInputDTO, cidadeAtual);
-		
+
 		try {
-			
+
 			return cidadeDTOAssembler.toModel(cadastroCidade.salvar(cidadeAtual));
-			
+
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}

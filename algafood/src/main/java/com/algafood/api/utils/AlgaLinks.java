@@ -42,7 +42,6 @@ public class AlgaLinks {
 	);
 
 	public Link linkToPedidos(String rel) {
-		// pedidoDTO.add(linkTo(PedidoController.class).withRel("pedidos"));
 
 		TemplateVariables filtroVariables = new TemplateVariables(
 				new TemplateVariable("clienteId", VariableType.REQUEST_PARAM),

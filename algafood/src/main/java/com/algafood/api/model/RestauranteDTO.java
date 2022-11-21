@@ -13,18 +13,14 @@ import lombok.Setter;
 public class RestauranteDTO extends RepresentationModel<RestauranteDTO> {
 
 	@ApiModelProperty(example = "1")
-	//@JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
 	private Long id;
 	
 	@ApiModelProperty(example = "Thai Gourmet")
-	//@JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
 	private String nome;
 	
 	@ApiModelProperty(example = "12.00")
-	//@JsonView(RestauranteView.Resumo.class)
 	private BigDecimal taxaFrete;
 	
-	//@JsonView(RestauranteView.Resumo.class)
 	private CozinhaDTO cozinha;
 	
 	@ApiModelProperty(example = "true")

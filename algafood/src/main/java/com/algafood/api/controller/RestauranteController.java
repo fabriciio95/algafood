@@ -76,13 +76,11 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	private RestauranteApenasNomeDTOAssembler restauranteApenasNomeDTOAssembler;
 
 	
-	//@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
 	public CollectionModel<RestauranteBasicoDTO> listar() {
 		return restauranteBasicoDTOAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 	
-	//@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
 	public CollectionModel<RestauranteApenasNomeDTO> listarApenasNomes() {
 		return restauranteApenasNomeDTOAssembler.toCollectionModel(restauranteRepository.findAll());
