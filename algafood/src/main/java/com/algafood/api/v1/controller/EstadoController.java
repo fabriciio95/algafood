@@ -27,7 +27,7 @@ import com.algafood.domain.service.CadastroEstadoService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping(path = "/estados", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/estados", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class EstadoController implements EstadoControllerOpenApi {
 
