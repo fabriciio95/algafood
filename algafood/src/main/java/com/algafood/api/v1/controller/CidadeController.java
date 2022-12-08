@@ -42,6 +42,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	private CidadeInputDTODisassembler cidadeInputDTODisassembler;
 
+	@Deprecated
 	@GetMapping
 	public CollectionModel<CidadeDTO> listar() {
 
