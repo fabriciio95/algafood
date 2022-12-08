@@ -49,6 +49,10 @@ import com.algafood.api.v1.openapi.model.ProdutosModelOpenApi;
 import com.algafood.api.v1.openapi.model.RestauranteInputModelOpenApi;
 import com.algafood.api.v1.openapi.model.RestaurantesBasicoModelOpenApi;
 import com.algafood.api.v1.openapi.model.UsuariosModelOpenApi;
+import com.algafood.api.v2.model.CidadeDTOV2;
+import com.algafood.api.v2.model.CozinhaDTOV2;
+import com.algafood.api.v2.openapi.model.CidadesModelOpenApiV2;
+import com.algafood.api.v2.openapi.model.CozinhasDTOOpenApiV2;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
@@ -156,8 +160,13 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 									   Resource.class,
 									   File.class,
 									   InputStream.class)
-				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.alternateTypeRules(
+						AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, CozinhaDTOV2.class), CozinhasDTOOpenApiV2.class),
+						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, CidadeDTOV2.class), CidadesModelOpenApiV2.class)
+				).directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+				.tags(new Tag("Cozinhas", "Gerencia as cozinhas"),
+					  new Tag("Cidades", "Gerencia as cidades"))
 				.apiInfo(apiInfoV2());
 	}
 	

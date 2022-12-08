@@ -20,6 +20,7 @@ import com.algafood.api.v2.assembler.CidadeDTOAssemblerV2;
 import com.algafood.api.v2.assembler.CidadeInputDTODisassemblerV2;
 import com.algafood.api.v2.model.CidadeDTOV2;
 import com.algafood.api.v2.model.input.CidadeInputDTOV2;
+import com.algafood.api.v2.openapi.controller.CidadeControllerOpenApiV2;
 import com.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algafood.domain.exception.NegocioException;
 import com.algafood.domain.model.Cidade;
@@ -31,7 +32,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping(path = "/v2/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
-public class CidadeControllerV2  {
+public class CidadeControllerV2  implements CidadeControllerOpenApiV2 {
 
 	private CidadeRepository cidadeRepository;
 
