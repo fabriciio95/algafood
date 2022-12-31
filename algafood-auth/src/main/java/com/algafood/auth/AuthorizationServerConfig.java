@@ -30,10 +30,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 					.accessTokenValiditySeconds(60 * 60 * 6) // 6 horas (padrão é 12 horas)
 				.and()
 					.withClient("app-mobile")
-					.secret("mob123")
+					.secret(passwordEncoder.encode("mob123"))
 					.authorizedGrantTypes("password")
 				    .scopes("write", "read")
-				    .accessTokenValiditySeconds(60 * 60 * 6); // 6 horas (padrão é 12 horas)
+				    .accessTokenValiditySeconds(60 * 60 * 6)  // 6 horas (padrão é 12 horas)
+				.and()
+					.withClient("checktoken")
+					.secret(passwordEncoder.encode("check123"))
+					.authorizedGrantTypes("password")
+				    .scopes("write", "read")
+				    .accessTokenValiditySeconds(60 * 60 * 6); // 6 horas (padrão é 12 horas);
 	}
 	
 	@Override
