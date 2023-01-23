@@ -35,6 +35,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
+	@Autowired
+	private JwtKeyStoreProperties jwtKeyStoreProperties;
+	
 	private RedisConnectionFactory redisConnectionFactory;
 
 	@Override
@@ -96,12 +99,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		
 		//jwtAccessTokenConverter.setSigningKey("3290402342kl34m23k4lm2fdf09o3k2mllrmcsdfpo");
 		
-		var jksResource = new ClassPathResource("keystores/algafood.jks");
-		var keyStorePass = "123456";
-		var keyPairAlias = "algafood";
+		var jksResource = new ClassPathResource(jwtKeyStoreProperties.getPath());
 		
-		var keyStoreKeyFactory = new KeyStoreKeyFactory(jksResource, keyStorePass.toCharArray());
-		var keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias);
+		var keyStoreKeyFactory = new KeyStoreKeyFactory(jksResource, jwtKeyStoreProperties.getPassword().toCharArray());
+		var keyPair = keyStoreKeyFactory.getKeyPair(jwtKeyStoreProperties.getKeypairAlias());
 		
 		jwtAccessTokenConverter.setKeyPair(keyPair);
 		
