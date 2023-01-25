@@ -17,6 +17,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
@@ -86,7 +88,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				.reuseRefreshTokens(false)
 				//.tokenStore(redisTokenStore())
 				.tokenGranter(tokenGranter(endpoints))
-				.accessTokenConverter(jwtAccessTokenConverter());
+				.accessTokenConverter(jwtAccessTokenConverter())
+				.approvalStore(approvalStore(endpoints.getTokenStore()));
+	}
+	
+	private ApprovalStore approvalStore(TokenStore tokenStore) {
+		var approvalStore = new TokenApprovalStore();
+		
+		approvalStore.setTokenStore(tokenStore);
+		
+		return approvalStore;
 	}
 	
 	@SuppressWarnings("unused")
