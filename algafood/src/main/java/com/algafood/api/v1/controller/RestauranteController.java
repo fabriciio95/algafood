@@ -39,6 +39,7 @@ import com.algafood.api.v1.model.RestauranteBasicoDTO;
 import com.algafood.api.v1.model.RestauranteDTO;
 import com.algafood.api.v1.model.input.RestauranteInputDTO;
 import com.algafood.api.v1.openapi.controller.RestauranteControllerOpenApi;
+import com.algafood.core.security.CheckSecurity;
 import com.algafood.core.validation.ValidacaoException;
 import com.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algafood.domain.exception.CozinhaNaoEncontradaException;
@@ -75,18 +76,19 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	@Autowired
 	private RestauranteApenasNomeDTOAssembler restauranteApenasNomeDTOAssembler;
 
-	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public CollectionModel<RestauranteBasicoDTO> listar() {
 		return restauranteBasicoDTOAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping(params = "projecao=apenas-nome")
 	public CollectionModel<RestauranteApenasNomeDTO> listarApenasNomes() {
 		return restauranteApenasNomeDTOAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 	
-
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping("/{restauranteId}")
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
 	   Restaurante restaurante =  cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -94,7 +96,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	   return restauranteDTOAssembler.toModel(restaurante);
 	}
 	
-
+	@CheckSecurity.Restaurantes.PodeEditar
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO) {
@@ -109,6 +111,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping("/{restauranteId}")
 	public RestauranteDTO atualizar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO, 
 			@PathVariable Long restauranteId) {
@@ -126,6 +129,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/ativo")
 	public ResponseEntity<Void> ativar(@PathVariable Long restauranteId) {
@@ -134,6 +138,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{restauranteId}/ativo")
 	public ResponseEntity<Void> inativar(@PathVariable Long restauranteId) {
@@ -142,6 +147,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/ativacoes")
 	public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
@@ -152,6 +158,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/ativacoes")
 	public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
@@ -162,6 +169,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/fechamento")
 	public ResponseEntity<Void> fechar(@PathVariable Long restauranteId) {
@@ -170,6 +178,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/abertura")
 	public ResponseEntity<Void> abrir(@PathVariable Long restauranteId) {
@@ -178,7 +187,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 
-
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PatchMapping("/{restauranteId}")
 	public RestauranteDTO atualizarParcial(@RequestBody Map<String, Object> campos, @PathVariable Long restauranteId,
 			HttpServletRequest request) {
@@ -225,7 +234,8 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, httpMessage);
 		}
 	}
-
+	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{restauranteId}")
 	public void excluir(@PathVariable Long restauranteId) {

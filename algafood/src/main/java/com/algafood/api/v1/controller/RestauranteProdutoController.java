@@ -24,6 +24,7 @@ import com.algafood.api.v1.model.ProdutoDTO;
 import com.algafood.api.v1.model.input.ProdutoInputDTO;
 import com.algafood.api.v1.openapi.controller.RestauranteProdutoControllerOpenApi;
 import com.algafood.api.v1.utils.AlgaLinks;
+import com.algafood.core.security.CheckSecurity;
 import com.algafood.domain.model.Produto;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.ProdutoRepository;
@@ -52,6 +53,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	@Autowired
 	private AlgaLinks algaLinks;
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId, @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
 		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
@@ -66,6 +68,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 				.add(algaLinks.linkToRestauranteProdutos(restauranteId));
 	}
 	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping("/{produtoId}")
 	public ProdutoDTO buscarPorId(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Produto produto = cadastroProdutoService.buscarOuFalhar(restauranteId, produtoId);
@@ -73,6 +76,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		return produtoDTOAssembler.toModel(produto);
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoDTO adicionar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInputDTO produtoInputDTO) {
@@ -85,6 +89,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		return produtoDTOAssembler.toModel(cadastroProdutoService.salvar(produto, restauranteId));
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping("/{produtoId}")
 	public ProdutoDTO atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
 				@RequestBody @Valid ProdutoInputDTO produtoInputDTO) {
