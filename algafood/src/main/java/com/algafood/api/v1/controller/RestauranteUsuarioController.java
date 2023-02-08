@@ -53,7 +53,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 		 return usuariosDTO;
 	}
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{usuarioId}")
 	public ResponseEntity<Void> associarResponsavel(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
@@ -62,7 +62,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 		return ResponseEntity.noContent().build();
 	}
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{usuarioId}")
 	public ResponseEntity<Void> deassociarResponsavel(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
