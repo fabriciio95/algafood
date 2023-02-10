@@ -85,6 +85,7 @@ public class PedidoController implements PedidoControllerOpenApI {
 		return pedidoDTOAssembler.toModel(pedido);
 	}
 	
+	@CheckSecurity.Pedidos.PodeCriar
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public PedidoDTO adicionar(@RequestBody @Valid PedidoInputDTO pedidoInputDTO) {
