@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algafood.api.v1.assembler.PermissaoDTOAssembler;
 import com.algafood.api.v1.model.PermissaoDTO;
 import com.algafood.api.v1.openapi.controller.PermissaoControllerOpenAPI;
+import com.algafood.core.security.CheckSecurity;
 import com.algafood.domain.repository.PermissaoRepository;
 
 
@@ -23,6 +24,7 @@ public class PermissaoController implements PermissaoControllerOpenAPI {
 	@Autowired
 	private PermissaoDTOAssembler permissaoDTOAssembler;
 	
+	@CheckSecurity.UsuarioGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<PermissaoDTO> listar() {
 		return permissaoDTOAssembler.toCollectionModel(permissaoRepository.findAll());

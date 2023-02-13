@@ -22,6 +22,7 @@ import com.algafood.api.v1.model.input.SenhaInputDTO;
 import com.algafood.api.v1.model.input.UsuarioComSenhaInputDTO;
 import com.algafood.api.v1.model.input.UsuarioInputDTO;
 import com.algafood.api.v1.openapi.controller.UsuarioControllerOpenApi;
+import com.algafood.core.security.CheckSecurity;
 import com.algafood.domain.model.Usuario;
 import com.algafood.domain.repository.UsuarioRepository;
 import com.algafood.domain.service.CadastroUsuarioService;
@@ -42,12 +43,13 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	@Autowired
 	private UsuarioInputDisassembler usuarioInputDisassembler;
 	
-	
+	@CheckSecurity.UsuarioGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioDTO> listar() {
 		return usuarioDTOAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
 	
+	@CheckSecurity.UsuarioGruposPermissoes.PodeConsultar
 	@GetMapping("/{usuarioId}")
 	public UsuarioDTO buscarPorId(@PathVariable Long usuarioId) {
 		return usuarioDTOAssembler.toModel(cadastroUsuarioService.buscarOuFalhar(usuarioId));
@@ -61,6 +63,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		return usuarioDTOAssembler.toModel(cadastroUsuarioService.salvar(usuario));
 	}
 	
+	@CheckSecurity.UsuarioGruposPermissoes.PodeAlterarUsuario
 	@PutMapping("/{usuarioId}")
 	public UsuarioDTO atualizar(@RequestBody @Valid UsuarioInputDTO usuarioInputDTO, @PathVariable Long usuarioId) {
 		Usuario usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
@@ -70,6 +73,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		return usuarioDTOAssembler.toModel(cadastroUsuarioService.salvar(usuario));
 	}
 	
+	@CheckSecurity.UsuarioGruposPermissoes.PodeAlterarPropriaSenha
 	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void alterarSenha(@RequestBody @Valid SenhaInputDTO senhaInputDTO, @PathVariable Long usuarioId) {

@@ -17,6 +17,7 @@ import com.algafood.api.v1.assembler.PermissaoDTOAssembler;
 import com.algafood.api.v1.model.PermissaoDTO;
 import com.algafood.api.v1.openapi.controller.GrupoPermissaoControllerOpenApi;
 import com.algafood.api.v1.utils.AlgaLinks;
+import com.algafood.core.security.CheckSecurity;
 import com.algafood.domain.model.Grupo;
 import com.algafood.domain.service.CadastroGrupoService;
 
@@ -33,7 +34,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	@Autowired
 	private AlgaLinks algaLinks;
 	
-	
+	@CheckSecurity.UsuarioGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<PermissaoDTO> listar(@PathVariable Long grupoId) {
 		Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
@@ -51,6 +52,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 		 return permissoes;
 	}
 	
+	@CheckSecurity.UsuarioGruposPermissoes.PodeEditar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{permissaoId}")
 	public ResponseEntity<Void> desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
@@ -59,6 +61,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.UsuarioGruposPermissoes.PodeEditar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{permissaoId}")
 	public ResponseEntity<Void> associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
