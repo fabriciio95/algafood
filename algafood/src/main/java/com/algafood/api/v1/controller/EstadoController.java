@@ -20,6 +20,7 @@ import com.algafood.api.v1.assembler.EstadoInputDTODisassembler;
 import com.algafood.api.v1.model.EstadoDTO;
 import com.algafood.api.v1.model.input.EstadoInputDTO;
 import com.algafood.api.v1.openapi.controller.EstadoControllerOpenApi;
+import com.algafood.core.security.CheckSecurity;
 import com.algafood.domain.model.Estado;
 import com.algafood.domain.repository.EstadoRepository;
 import com.algafood.domain.service.CadastroEstadoService;
@@ -39,16 +40,19 @@ public class EstadoController implements EstadoControllerOpenApi {
 	
 	private EstadoInputDTODisassembler estadoInputDTODisassembler;
 
+	@CheckSecurity.Estados.PodeConsultar
 	@GetMapping
 	public CollectionModel<EstadoDTO> listar() {
 		return estadoDTOAssembler.toCollectionModel(estadoRepository.findAll());
 	}
 
+	@CheckSecurity.Estados.PodeConsultar
 	@GetMapping("/{estadoId}")
 	public EstadoDTO buscar(@PathVariable Long estadoId) {
 		return estadoDTOAssembler.toModel(cadastroEstado.buscarOuFalhar(estadoId));
 	}
 
+	@CheckSecurity.Estados.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public EstadoDTO adicionar(@RequestBody @Valid EstadoInputDTO estadoInputDTO) {
@@ -58,6 +62,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 		return estadoDTOAssembler.toModel(estadoRepository.save(estado));
 	}
 
+	@CheckSecurity.Estados.PodeEditar
 	@PutMapping("/{estadoId}")
 	public EstadoDTO atualizar(@RequestBody @Valid EstadoInputDTO estadoInputDTO, @PathVariable Long estadoId) {
 		Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
@@ -68,6 +73,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 
 	}
 
+	@CheckSecurity.Estados.PodeEditar
 	@DeleteMapping("/{estadoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void excluir(@PathVariable Long estadoId) {
