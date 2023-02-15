@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.algafood.api.v1.controller.RestauranteController;
 import com.algafood.api.v1.model.RestauranteApenasNomeDTO;
 import com.algafood.api.v1.utils.AlgaLinks;
+import com.algafood.core.security.AlgaSecurity;
 import com.algafood.domain.model.Restaurante;
 
 @Component
@@ -20,6 +21,9 @@ public class RestauranteApenasNomeDTOAssembler extends RepresentationModelAssemb
 	@Autowired
 	private AlgaLinks algaLinks;
 	
+	@Autowired
+	private AlgaSecurity algaSecurity;
+	
 	
 	public RestauranteApenasNomeDTOAssembler() {
 		super(RestauranteController.class, RestauranteApenasNomeDTO.class);
@@ -30,15 +34,20 @@ public class RestauranteApenasNomeDTOAssembler extends RepresentationModelAssemb
 		RestauranteApenasNomeDTO restauranteApenasNomeDTO = createModelWithId(restaurante.getId(), restaurante);
 		
 		modelMapper.map(restaurante, restauranteApenasNomeDTO);
-				
-		restauranteApenasNomeDTO.add(algaLinks.linkToRestaurantes("restaurantes"));
+		
+		if(algaSecurity.podeConsultarRestaurantes())
+			restauranteApenasNomeDTO.add(algaLinks.linkToRestaurantes("restaurantes"));
 		
 		return restauranteApenasNomeDTO;
 	}
 	
 	@Override
 	public CollectionModel<RestauranteApenasNomeDTO> toCollectionModel(Iterable<? extends Restaurante> entities) {
-		return super.toCollectionModel(entities)
-				.add(algaLinks.linkToRestaurantes());
+		CollectionModel<RestauranteApenasNomeDTO> collectionDto = super.toCollectionModel(entities);
+			
+		if(algaSecurity.podeConsultarRestaurantes())
+				collectionDto.add(algaLinks.linkToRestaurantes());
+		
+		return collectionDto;
 	}
 }

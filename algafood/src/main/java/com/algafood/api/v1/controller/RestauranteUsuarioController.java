@@ -17,6 +17,7 @@ import com.algafood.api.v1.assembler.UsuarioDTOAssembler;
 import com.algafood.api.v1.model.UsuarioDTO;
 import com.algafood.api.v1.openapi.controller.RestauranteUsuarioControllerOpenApi;
 import com.algafood.api.v1.utils.AlgaLinks;
+import com.algafood.core.security.AlgaSecurity;
 import com.algafood.core.security.CheckSecurity;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.service.CadastroRestauranteService;
@@ -35,6 +36,9 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 	@Autowired
 	private AlgaLinks algaLinks;
 	
+	@Autowired
+	private AlgaSecurity algaSecurity;
+	
 	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioDTO> listar(@PathVariable Long restauranteId) {
@@ -42,14 +46,18 @@ public class RestauranteUsuarioController implements RestauranteUsuarioControlle
 		
 		 CollectionModel<UsuarioDTO> usuariosDTO = usuarioDTOAssembler.toCollectionModel(restaurante.getResponsaveis())
 				.removeLinks()
-				.add(algaLinks.linkToResponsaveisRestaurante(restauranteId))
-				.add(algaLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
+				.add(algaLinks.linkToResponsaveisRestaurante(restauranteId));
+		
+		if(algaSecurity.podeGerenciarCadastroRestaurantes()) {
+		
+			 usuariosDTO.add(algaLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
+			 
+			 usuariosDTO.forEach(usuarioDTO -> {
+				 usuarioDTO.add(algaLinks
+						 .linkToRestauranteResponsavelDesassociacao(restauranteId, usuarioDTO.getId(), "desassociar"));
+			 });
 		 
-		 usuariosDTO.forEach(usuarioDTO -> {
-			 usuarioDTO.add(algaLinks
-					 .linkToRestauranteResponsavelDesassociacao(restauranteId, usuarioDTO.getId(), "desassociar"));
-		 });
-		 
+		}
 		 return usuariosDTO;
 	}
 	

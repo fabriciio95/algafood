@@ -33,20 +33,27 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 		
 		modelMapper.map(pedido, pedidoDTO);
 		
-		pedidoDTO.getRestaurante().add(algaLinks.linkToRestaurante(pedidoDTO.getRestaurante().getId()));
+		if(algaSecurity.podeConsultarRestaurantes()) {
+			pedidoDTO.getRestaurante().add(algaLinks.linkToRestaurante(pedidoDTO.getRestaurante().getId()));
+			
+			pedidoDTO.getItens().forEach(item -> {
+				item.add(algaLinks.linkToProduto(pedidoDTO.getRestaurante().getId(), item.getProdutoId()));
+			});
+			
+		}
 		
-		pedidoDTO.getCliente().add(algaLinks.linkToUsuario(pedidoDTO.getCliente().getId()));
+		if(algaSecurity.podeConsultarUsuariosGruposPermissoes())
+			pedidoDTO.getCliente().add(algaLinks.linkToUsuario(pedidoDTO.getCliente().getId()));
 		
-		pedidoDTO.getFormaPagamento().add(algaLinks.linkToFormaPagamento(pedidoDTO.getFormaPagamento().getId()));
+		if(algaSecurity.podeConsultarFormasPagamento())
+			pedidoDTO.getFormaPagamento().add(algaLinks.linkToFormaPagamento(pedidoDTO.getFormaPagamento().getId()));
 		
-		pedidoDTO.getEnderecoEntrega().getCidade().add(
-				algaLinks.linkToCidade(pedidoDTO.getEnderecoEntrega().getCidade().getId()));
+		if(algaSecurity.podeConsultarCidades())
+			pedidoDTO.getEnderecoEntrega().getCidade().add(
+					algaLinks.linkToCidade(pedidoDTO.getEnderecoEntrega().getCidade().getId()));
 		
-		pedidoDTO.getItens().forEach(item -> {
-			item.add(algaLinks.linkToProduto(pedidoDTO.getRestaurante().getId(), item.getProdutoId()));
-		});
-		
-		pedidoDTO.add(algaLinks.linkToPedidos("pedidos"));
+		if(algaSecurity.podePesquisarPedidos())
+			pedidoDTO.add(algaLinks.linkToPedidos("pedidos"));
 		
 		if(algaSecurity.podeGerenciarPedidos(pedido.getCodigo())) {
 			if(pedido.podeSerConfirmado())
