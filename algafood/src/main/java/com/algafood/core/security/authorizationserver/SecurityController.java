@@ -10,4 +10,10 @@ public class SecurityController {
 	public String login() {
 		return "pages/login";
 	}
+	
+	@GetMapping("/oauth/confirm_access")
+	public String approval() {
+		//WhitelabelApprovalEndpoint classe responsável por criar pagina padrão do spring
+		return "pages/approval";
+	}
 }
