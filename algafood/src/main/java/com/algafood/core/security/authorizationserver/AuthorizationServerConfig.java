@@ -1,5 +1,7 @@
 package com.algafood.core.security.authorizationserver;
 
+import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
 import javax.sql.DataSource;
@@ -22,6 +24,11 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 
 @Configuration
 @EnableAuthorizationServer
@@ -113,18 +120,30 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //	}
 	
 	@Bean
+	public JWKSet jwkSet() {
+		RSAKey.Builder builder = new RSAKey.Builder((RSAPublicKey) keyPair().getPublic())
+				.keyUse(KeyUse.SIGNATURE)
+				.algorithm(JWSAlgorithm.RS256)
+				.keyID("algafood-key-id");
+		
+		return new JWKSet(builder.build());
+	}
+	
+	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
 		var jwtAccessTokenConverter = new JwtAccessTokenConverter();
 		
 		//jwtAccessTokenConverter.setSigningKey("3290402342kl34m23k4lm2fdf09o3k2mllrmcsdfpo");
 		
-		var keyStoreKeyFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(), 
-				jwtKeyStoreProperties.getPassword().toCharArray());
-		var keyPair = keyStoreKeyFactory.getKeyPair(jwtKeyStoreProperties.getKeypairAlias());
-		
-		jwtAccessTokenConverter.setKeyPair(keyPair);
+		jwtAccessTokenConverter.setKeyPair(keyPair());
 		
 		return jwtAccessTokenConverter;
+	}
+	
+	private KeyPair keyPair() {
+		var keyStoreKeyFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(), 
+				jwtKeyStoreProperties.getPassword().toCharArray());
+		return keyStoreKeyFactory.getKeyPair(jwtKeyStoreProperties.getKeypairAlias());
 	}
 	
 	private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
