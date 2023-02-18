@@ -57,16 +57,23 @@ import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.GrantType;
+import springfox.documentation.service.ResourceOwnerPasswordCredentialsGrant;
 import springfox.documentation.service.ResponseMessage;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -75,7 +82,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig implements WebMvcConfigurer {
 
-	//@Bean
+	@Bean
 	public Docket apiDocketV1() {
 		
 		var typeResolver = new TypeResolver();
@@ -117,6 +124,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, ProdutoDTO.class), ProdutosModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, RestauranteBasicoDTO.class), RestaurantesBasicoModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, UsuarioDTO.class), UsuariosModelOpenApi.class))
+				.securitySchemes(Arrays.asList(securityScheme()))
+				.securityContexts(Arrays.asList(securityContext()))
 				.apiInfo(apiInfoV1())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 					  new Tag("Grupos", "Gerencia os grupos"),
@@ -131,7 +140,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 					  new Tag("Permissões", "Gerencia as permissões"));
 	}
 	
-	@Bean
+	//@Bean
 	public Docket apiDocketV2() {
 		
 		var typeResolver = new TypeResolver();
@@ -170,6 +179,35 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.apiInfo(apiInfoV2());
 	}
 	
+	private SecurityScheme securityScheme() {
+		return new OAuthBuilder()
+				.name("Algafood")
+				.grantTypes(grantTypes())
+				.scopes(scopes())
+				.build();
+	}
+	
+	private SecurityContext securityContext() {
+		var securityReference = SecurityReference.builder()
+				.reference("Algafood")
+				.scopes(scopes().toArray(new AuthorizationScope[0]))
+				.build();
+		
+		return SecurityContext.builder()
+				.securityReferences(Arrays.asList(securityReference))
+				.forPaths(PathSelectors.any())
+				.build();
+	}
+	
+	private List<GrantType> grantTypes() {
+		return Arrays.asList(new ResourceOwnerPasswordCredentialsGrant("/oauth/token"));
+	}
+	
+	private List<AuthorizationScope> scopes() {
+		return Arrays.asList(new AuthorizationScope("READ", "Acesso de leitura"),
+				new AuthorizationScope("WRITE", "Acesso de escrita"));
+	}
+
 	private List<ResponseMessage> globalDeleteResponseMessages() {
 		return Arrays.asList(
 					new ResponseMessageBuilder()
@@ -258,10 +296,12 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 	
 	private ApiInfo apiInfoV1() {
 		return new ApiInfoBuilder()
-					.title("Algafood API (Depreciada)")
-					.description("API aberta para clientes e restaurantes.<br/>"
-							+ "<strong>Essa versão da API está depreciada e deixará de existir a partir de 01/01/2024. "
-							+ "Use a versão mais atual da API.")
+//					.title("Algafood API (Depreciada)")
+//					.description("API aberta para clientes e restaurantes.<br/>"
+//							+ "<strong>Essa versão da API está depreciada e deixará de existir a partir de 01/01/2024. "
+//							+ "Use a versão mais atual da API.")
+					.title("Algafood API")
+					.description("API aberta para clientes e restaurantes.")
 					.version("1")
 					.contact(new Contact("Fabricio", "https://github.com/fabriciio95", "fabriciousiqueira@gmail.com"))
 				.build();

@@ -44,7 +44,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	private CidadeInputDTODisassembler cidadeInputDTODisassembler;
 
 	@CheckSecurity.Cidades.PodeConsultar
-	@Deprecated
+	//@Deprecated
 	@GetMapping
 	public CollectionModel<CidadeDTO> listar() {
 
