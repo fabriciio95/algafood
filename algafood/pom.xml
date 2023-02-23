@@ -25,6 +25,7 @@
 		<oauth2-oidc-sdk>6.21.2</oauth2-oidc-sdk>
 		<spring-security-oauth2>2.3.7.RELEASE</spring-security-oauth2>
 		<spring-security-jwt.version>1.0.11.RELEASE</spring-security-jwt.version>
+		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -170,12 +171,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
-		<!-- <dependency>
-			<groupId>com.nimbusds</groupId>
-			<artifactId>oauth2-oidc-sdk</artifactId>
-			<version>${oauth2-oidc-sdk}</version>
-		</dependency> -->
-		
+		<!-- <dependency> <groupId>com.nimbusds</groupId> <artifactId>oauth2-oidc-sdk</artifactId> 
+			<version>${oauth2-oidc-sdk}</version> </dependency> -->
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-jwt</artifactId>
@@ -211,5 +209,36 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>docker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+						<version>${dockerfile-maven-version}</version>
+						<executions>
+							<execution>
+								<id>default</id>
+								<goals>
+									<goal>build</goal>
+									<goal>push</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<repository>algafood-api</repository>
+							<buildArgs>
+								<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+							</buildArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
 
 </project>
