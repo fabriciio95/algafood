@@ -1,5 +1,11 @@
 set foreign_key_checks = 0;
 
+lock tables cidade write, cozinha write, estado write, forma_pagamento write,
+	grupo write, grupo_permissao write, permissao write,
+	produto write, restaurante write, restaurante_forma_pagamento write,
+	restaurante_usuario_responsavel write, usuario write, usuario_grupo write,
+	pedido write, item_pedido write, foto_produto write, oauth_client_details write; 
+
 DELETE FROM cidade;
 DELETE FROM cozinha;
 DELETE FROM estado;
@@ -205,5 +211,5 @@ values (
   null, null, null
 );
 
-
+unlock tables;
  
