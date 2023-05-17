@@ -6,10 +6,8 @@ import org.springframework.hateoas.Links;
 
 import com.algafood.api.v1.model.PermissaoDTO;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-@ApiModel("PermissoesModel")
 @Data
 public class PermissoesModelOpenApi {
 	
@@ -17,7 +15,6 @@ public class PermissoesModelOpenApi {
 	
 	private Links _links;
  
-	@ApiModel("PermissoesEmbeddedModel")
 	@Data
 	public class PermissoesEmbeddedModelOpenApi {
 		

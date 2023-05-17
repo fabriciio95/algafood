@@ -6,12 +6,10 @@ import org.springframework.hateoas.Links;
 
 import com.algafood.api.v1.model.CozinhaDTO;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@ApiModel("CozinhasDTO")
 @Getter
 @Setter
 public class CozinhasDTOOpenApi {
@@ -22,7 +20,6 @@ public class CozinhasDTOOpenApi {
 	
 	private PageModelOpenApi page;
 	
-	@ApiModel("CozinhasEmbeddedModel")
 	@Data
 	public class CozinhasEmbeddedModelOpenAPI {
 		

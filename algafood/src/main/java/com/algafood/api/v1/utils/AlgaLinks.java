@@ -51,7 +51,7 @@ public class AlgaLinks {
 
 		String pedidosUrl = linkTo(PedidoController.class).toUri().toString();
 
-		return new Link(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
+		return Link.of(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
 	}
 	
 	public Link linkToRestaurante(Long restauranteId, String rel) {
@@ -175,7 +175,7 @@ public class AlgaLinks {
 	public Link linkToRestaurantes(String rel) {		
 		String restaurantesUrl = linkTo(methodOn(RestauranteController.class).listar()).toUri().toString();
 		
-		return new Link(UriTemplate.of(restaurantesUrl, PROJECAO_VARIABLES), rel);
+		return Link.of(UriTemplate.of(restaurantesUrl, PROJECAO_VARIABLES), rel);
 	}
 	
 	public Link linkToRestaurantes() {
@@ -322,7 +322,7 @@ public class AlgaLinks {
 		String uri = linkTo(methodOn(EstatisticasController.class)
 				.consultarVendasDiarias(null, null)).withRel(rel).toUri().toString();
 		
-		return new Link(UriTemplate.of(uri, templateVariables), rel);
+		return Link.of(UriTemplate.of(uri, templateVariables), rel);
 	}
 	
 }

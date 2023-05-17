@@ -6,10 +6,8 @@ import org.springframework.hateoas.Links;
 
 import com.algafood.api.v1.model.GrupoDTO;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-@ApiModel("GruposModel")
 @Data
 public class GruposModelOpenApi {
 	
@@ -18,7 +16,6 @@ public class GruposModelOpenApi {
 	private Links _links;
 
 	
-	@ApiModel("GruposEmbeddedModel")
 	@Data
 	public class GruposEmbeddedModelOpenApi {
 		

@@ -1,53 +1,16 @@
 package com.algafood.api.v2.openapi.controller;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.PagedModel;
-
-import com.algafood.api.exceptionhandler.Problem;
 import com.algafood.api.v2.model.CozinhaDTOV2;
 import com.algafood.api.v2.model.input.CozinhaInputDTOV2;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-@Api(tags = "Cozinhas")
 public interface CozinhaControllerOpenApiV2 {
 
-	
-	@ApiOperation("Lista as cozinhas com paginação")
-	PagedModel<CozinhaDTOV2> listar(Pageable pageable);
+	CozinhaDTOV2 buscar(Long cozinhaId);
 
-	@ApiResponses({
-		@ApiResponse(code = 400, message = "ID da cozinha inválido", response = Problem.class),
-		@ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
-	})
-	@ApiOperation("Busca uma cozinha por ID")
-	CozinhaDTOV2 buscar(@ApiParam(value = "ID de uma cozinha", example = "1", required = true) Long cozinhaId);
+	CozinhaDTOV2 adicionar(CozinhaInputDTOV2 cozinhaInputDTO);
 
-	@ApiResponses({
-		@ApiResponse(code = 201, message = "Cozinha cadastrada")
-	})
-	@ApiOperation("Cadastra uma cozinha")
-	CozinhaDTOV2 adicionar(@ApiParam(name = "corpo", 
-			value = "Representação de uma nova cozinha", required = true)  CozinhaInputDTOV2 cozinhaInputDTO);
+	CozinhaDTOV2 atualizar(Long cozinhaId, CozinhaInputDTOV2 cozinhaInputDTO);
 
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "Cozinha atualizada"),
-		@ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
-	})
-	@ApiOperation("Atualiza uma cozinha por ID")
-	CozinhaDTOV2 atualizar(@ApiParam(value = "ID de uma cozinha", example = "1", required = true) Long cozinhaId, 
-		@ApiParam(name = "corpo", value = "Representação de uma cozinha com os novos dados", 
-				required = true) CozinhaInputDTOV2 cozinhaInputDTO);
-
-	@ApiResponses({
-		@ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class),
-		@ApiResponse(code = 204, message = "Cozinha excluída")
-	})
-	@ApiOperation("Exclui uma cozinha por ID")
-	void excluir(@ApiParam(value = "ID de uma cozinha", example = "1", required = true) Long cozinhaId);
+	void excluir(Long cozinhaId);
 
 }
