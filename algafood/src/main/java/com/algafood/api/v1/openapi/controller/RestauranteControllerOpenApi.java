@@ -13,6 +13,9 @@ import com.algafood.api.v1.model.RestauranteBasicoDTO;
 import com.algafood.api.v1.model.RestauranteDTO;
 import com.algafood.api.v1.model.input.RestauranteInputDTO;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+@SecurityRequirement(name = "security_auth")
 public interface RestauranteControllerOpenApi {
 
 	CollectionModel<RestauranteBasicoDTO> listar();

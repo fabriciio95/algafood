@@ -5,6 +5,9 @@ import org.springframework.hateoas.CollectionModel;
 import com.algafood.api.v1.model.ProdutoDTO;
 import com.algafood.api.v1.model.input.ProdutoInputDTO;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+@SecurityRequirement(name = "security_auth")
 public interface RestauranteProdutoControllerOpenApi {
 
 	CollectionModel<ProdutoDTO> listar(Long restauranteId, Boolean incluirInativos);

@@ -9,6 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.algafood.api.v1.model.FotoProdutoDTO;
 import com.algafood.api.v1.model.input.FotoProdutoInputDTO;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+@SecurityRequirement(name = "security_auth")
 public interface RestauranteProdutoFotoControllerOpenApi {
 
 	FotoProdutoDTO buscar(Long restauranteId,  Long produtoId);

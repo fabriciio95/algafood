@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 
 import com.algafood.api.v1.model.FormaPagamentoDTO;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+@SecurityRequirement(name = "security_auth")
 public interface RestauranteFormaPagamentoOpenApi {
 	
 	CollectionModel<FormaPagamentoDTO> listar(Long restauranteId);

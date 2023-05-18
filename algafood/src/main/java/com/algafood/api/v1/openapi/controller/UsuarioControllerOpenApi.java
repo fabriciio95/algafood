@@ -7,6 +7,9 @@ import com.algafood.api.v1.model.input.SenhaInputDTO;
 import com.algafood.api.v1.model.input.UsuarioComSenhaInputDTO;
 import com.algafood.api.v1.model.input.UsuarioInputDTO;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+@SecurityRequirement(name = "security_auth")
 public interface UsuarioControllerOpenApi {
 
 	CollectionModel<UsuarioDTO> listar();
