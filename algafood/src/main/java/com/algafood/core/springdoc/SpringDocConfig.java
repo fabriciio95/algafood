@@ -2,6 +2,7 @@ package com.algafood.core.springdoc;
 
 import java.util.Arrays;
 
+import org.apache.http.protocol.ResponseServer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,22 +56,34 @@ public class SpringDocConfig {
 		return openApi -> { 
 			openApi.getPaths()
 			           .values()
-			           .stream()
-			           .flatMap(pathItem -> pathItem.readOperations().stream())
-			           .forEach(operation -> {
-			        	   ApiResponses responses = operation.getResponses();
-			        	   
-			        	   ApiResponse apiResponseNaoEncontrado = new ApiResponse()
-			        			   .description("Recurso não encontrado");
-			        	   ApiResponse apiResponseSemRepresentacao = new ApiResponse()
-			        			   .description("Recurso não possui uma representação que poderia ser aceita pelo consumidor");
-			        	   ApiResponse apiResponseErroInterno = new ApiResponse()
-			        			   .description("Erro interno no servidor");
-			        	   
-			        	   responses.addApiResponse("404", apiResponseNaoEncontrado);
-			        	   responses.addApiResponse("406", apiResponseSemRepresentacao);
-			        	   responses.addApiResponse("500", apiResponseErroInterno);
-			           });
+			           .forEach(pathItem -> pathItem.readOperationsMap()
+			        		   .forEach((httpMethod, operation) -> {
+			        			   ApiResponses responses = operation.getResponses();
+			        			   
+			        			   switch(httpMethod) {
+			        			   	  case GET:
+			        			   		  responses.addApiResponse("404", new ApiResponse().description("Recurso não encontrado"));
+			        			   		  responses.addApiResponse("406", new ApiResponse().description("Recurso não possui representação que poderia ser aceita pelo consumidor"));
+			        			   		  responses.addApiResponse("500", new ApiResponse().description("Erro interno no servidor"));
+			        			   		  break;
+			        			   	  case POST:
+			        			   		  responses.addApiResponse("400", new ApiResponse().description("Requisição inválida"));
+			        			   		  responses.addApiResponse("500", new ApiResponse().description("Erro interno no servidor"));
+			        			   		  break;
+			        			   	  case PATCH:
+			        			   	  case PUT:
+			        			   		  responses.addApiResponse("404", new ApiResponse().description("Recurso não encontrado"));
+			        			   		  responses.addApiResponse("400", new ApiResponse().description("Requisição inválida"));
+			        			   		  responses.addApiResponse("500", new ApiResponse().description("Erro interno no servidor"));
+			        			   		  break;
+			        			   	 case DELETE:
+			        			   		  responses.addApiResponse("404", new ApiResponse().description("Recurso não encontrado"));
+			        			   		  responses.addApiResponse("500", new ApiResponse().description("Erro interno no servidor"));
+			        			   		  break;
+			        			   	default:
+			        			   		break;
+			        			   }
+			        		   }));
 		};
 	}
 }
