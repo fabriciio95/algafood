@@ -196,7 +196,7 @@ insert into oauth_client_details (
 )
 values (
   'foodanalytics', null, '$2y$12$w3igMjsfS5XoAYuowoH3C.54vRFWlcXSHLjX7MwF990Kc2KKKh72e',
-  'READ,WRITE', 'authorization_code', 'http://localhost:8082', null,
+  'READ,WRITE', 'authorization_code', 'http://localhost:8080/swagger-ui/oauth2-redirect.html', null,
   null, null, null
 );
 
