@@ -3,6 +3,8 @@ package com.algafood.api.v1.model;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
+import com.algafood.api.v1.openapi.model.EstadoModelOpenApi;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +12,10 @@ import lombok.Setter;
 @Relation(collectionRelation = "estados")
 @Getter
 @Setter
+@Schema(name = "EstadoDTO", implementation = EstadoModelOpenApi.class)
 public class EstadoDTO extends RepresentationModel<EstadoDTO> {
 
-	@Schema(example = "1")
 	private Long id;
 	
-	@Schema(example = "Minas Gerais")
 	private String nome;
 }

@@ -10,32 +10,17 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Schema(name = "CozinhasDTOOpenApi")
+@Schema(name = "CozinhasDTO")
 @JsonPropertyOrder({ "_embedded", "_links", "page" })
 public class CozinhasDTOOpenApi extends PagedModelOpenApi {
 	
 	@Schema(name = "_embedded")
 	private CozinhasEmbeddedpenApi _embedded;
 	
-	
 	@Getter
 	@Setter
+	@Schema(name = "CozinhasEmbeddedDTO")
 	private class CozinhasEmbeddedpenApi {
 		private List<CozinhaDTOOpenApi> cozinhas;
-	}
-
-	@Getter
-	@Setter
-	public class CozinhaDTOOpenApi {
-
-		@Schema(example = "1")
-		private Long id;
-	
-		@Schema(example = "Brasileira")
-		private String nome;
-	
-		@Schema(name = "_links")
-		private LinksModelOpenApi _links;
-
 	}
 }
