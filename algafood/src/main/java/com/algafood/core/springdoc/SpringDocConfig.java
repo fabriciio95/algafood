@@ -70,7 +70,8 @@ public class SpringDocConfig {
 						 .url("https://algaworks.com")
 				 ).tags(Arrays.asList(
 						 new Tag().name("Cidades").description("Gerencia as cidades"),
-						 new Tag().name("Grupos").description("Gerencia os grupos")
+						 new Tag().name("Grupos").description("Gerencia os grupos"),
+						 new Tag().name("Cozinhas").description("Gerencia as cozinhas")
 				 )).components(new Components()
 						 .schemas(gerarSchemas())
 						 .responses(gerarResponses())
@@ -110,13 +111,17 @@ public class SpringDocConfig {
 		};
 	}
 	
+	@Bean
+    void customModelConverter() {
+        ModelConverters.getInstance().addConverter(new CustomModelConverter());
+    }
+	
 	@SuppressWarnings("rawtypes")
 	private Map<String, Schema>  gerarSchemas() {
 		final Map<String, Schema> schemaMap = new HashMap<>();
 		
 		Map<String, Schema> problemaSchema = ModelConverters.getInstance().read(Problem.class);
 		Map<String, Schema> problemaObjectSchema = ModelConverters.getInstance().read(Problem.Object.class);
-		
 		
 		schemaMap.putAll(problemaSchema);
 		schemaMap.putAll(problemaObjectSchema);

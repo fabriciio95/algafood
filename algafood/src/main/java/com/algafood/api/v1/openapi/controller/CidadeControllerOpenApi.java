@@ -30,7 +30,9 @@ public interface CidadeControllerOpenApi {
 	})
 	CidadeDTO buscar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
-	@Operation(summary = "Cadastra uma cidade", description = "Cadastro de uma cidade, necessita de um estado e um nome válido")
+	@Operation(summary = "Cadastra uma cidade", description = "Cadastro de uma cidade, necessita de um estado e um nome válido", responses = {
+			@ApiResponse(responseCode = "201", description = "Cidade cadastrada")
+	})
 	CidadeDTO adicionar(@RequestBody(description = "Representação de uma nova cidade", required = true) CidadeInputDTO cidadeInputDTO);
 
 	@Operation(summary = "Atualiza uma cidade por id", responses = {

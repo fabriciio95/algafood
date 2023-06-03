@@ -2,27 +2,40 @@ package com.algafood.api.v1.openapi.model;
 
 import java.util.List;
 
-import org.springframework.hateoas.Links;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.algafood.api.v1.model.CozinhaDTO;
-
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CozinhasDTOOpenApi {
+@Schema(name = "CozinhasDTOOpenApi")
+@JsonPropertyOrder({ "_embedded", "_links", "page" })
+public class CozinhasDTOOpenApi extends PagedModelOpenApi {
+	
+	@Schema(name = "_embedded")
+	private CozinhasEmbeddedpenApi _embedded;
+	
+	
+	@Getter
+	@Setter
+	private class CozinhasEmbeddedpenApi {
+		private List<CozinhaDTOOpenApi> cozinhas;
+	}
 
-	private CozinhasEmbeddedModelOpenAPI _embedded;
+	@Getter
+	@Setter
+	public class CozinhaDTOOpenApi {
+
+		@Schema(example = "1")
+		private Long id;
 	
-	private Links _links;
+		@Schema(example = "Brasileira")
+		private String nome;
 	
-	private PageModelOpenApi page;
-	
-	@Data
-	public class CozinhasEmbeddedModelOpenAPI {
-		
-		private List<CozinhaDTO> cozinhas;
+		@Schema(name = "_links")
+		private LinksModelOpenApi _links;
+
 	}
 }
