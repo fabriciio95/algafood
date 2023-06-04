@@ -2,23 +2,25 @@ package com.algafood.api.v1.openapi.model;
 
 import java.util.List;
 
-import org.springframework.hateoas.Links;
-
 import com.algafood.api.v1.model.PedidoResumoDTO;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class PedidosResumoModelOpenApi {
+@Getter
+@Setter
+@Schema(name = "PedidosResumoDTO")
+@JsonPropertyOrder({ "_embedded", "_links", "page" })
+public class PedidosResumoModelOpenApi extends PagedModelOpenApi {
 	
+	@Schema(name = "_embedded")
 	private PedidosResumoEmbeddedModelOpenApi _embedded;
 	
-	private Links _links;
-	
-	private PageModelOpenApi page;
-
-	
-	@Data
+	@Getter
+	@Setter
+	@Schema(name = "PedidosResumoEmbeddedDTO")
 	public class PedidosResumoEmbeddedModelOpenApi {
 		
 		List<PedidoResumoDTO> pedidos;
