@@ -13,13 +13,24 @@ import com.algafood.api.v1.model.RestauranteBasicoDTO;
 import com.algafood.api.v1.model.RestauranteDTO;
 import com.algafood.api.v1.model.input.RestauranteInputDTO;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @SecurityRequirement(name = "security_auth")
 public interface RestauranteControllerOpenApi {
 
+	@Operation(parameters = {
+		@Parameter(name = "projecao", 
+				   description = "Nome da projeção",
+				   example = "apenas-nome",
+				   in = ParameterIn.QUERY,
+				   required = false)
+	})
 	CollectionModel<RestauranteBasicoDTO> listar();
 
+	@Operation(hidden = true)
 	CollectionModel<RestauranteApenasNomeDTO> listarApenasNomes();
 
 	RestauranteDTO buscar(Long restauranteId);
