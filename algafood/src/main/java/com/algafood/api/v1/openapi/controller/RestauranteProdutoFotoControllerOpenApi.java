@@ -4,14 +4,15 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.algafood.api.v1.model.FotoProdutoDTO;
 import com.algafood.api.v1.model.input.FotoProdutoInputDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -31,7 +32,10 @@ public interface RestauranteProdutoFotoControllerOpenApi {
 	ResponseEntity<?> servirFoto(Long restauranteId, Long produtoId,  String acceptHeader)
 			throws HttpMediaTypeNotAcceptableException;
 
-	FotoProdutoDTO atualizarFoto(Long restauranteId, Long produtoId, FotoProdutoInputDTO fotoProdutoInput, MultipartFile arquivo)
+	@Operation(summary = "Atualiza a foto do produto de um restaurante")
+	FotoProdutoDTO atualizarFoto(@Parameter(description = "ID do restaurante", example = "1", required = true) Long restauranteId, 
+								 @Parameter(description = "ID do produto", example = "1", required = true)Long produtoId, 
+			                     @RequestBody(required = true) FotoProdutoInputDTO fotoProdutoInput)
 			throws IOException;
 
 	
