@@ -1,10 +1,9 @@
-package com.algafood.api.v1.model;
+package com.algafood.api.v1.openapi.model;
 
 import java.math.BigDecimal;
 
-import org.springframework.hateoas.RepresentationModel;
-
-import com.algafood.api.v1.openapi.model.RestauranteOpenApiDTO;
+import com.algafood.api.v1.model.CozinhaDTO;
+import com.algafood.api.v1.model.EnderecoDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -12,8 +11,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Schema(implementation = RestauranteOpenApiDTO.class)
-public class RestauranteDTO extends RepresentationModel<RestauranteDTO> {
+@Schema(name = "RestauranteDTO")
+public class RestauranteOpenApiDTO {
 
 	@Schema(example = "1")
 	private Long id;
@@ -34,4 +33,6 @@ public class RestauranteDTO extends RepresentationModel<RestauranteDTO> {
 	
 	private EnderecoDTO endereco;
 	
+	@Schema(name = "_links")
+	private LinksModelOpenApi _links;
 }
