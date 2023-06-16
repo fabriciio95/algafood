@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.api.v1.openapi.controller.EstatisticasControllerOpenApi;
+import com.algafood.api.v1.openapi.model.EstatisticasModelOpenApi;
 import com.algafood.api.v1.utils.AlgaLinks;
 import com.algafood.core.security.CheckSecurity;
 import com.algafood.domain.filter.VendaDiariaFilter;
 import com.algafood.domain.model.dto.VendaDiaria;
 import com.algafood.domain.service.VendaQueryService;
 import com.algafood.domain.service.VendaReportService;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping(path = "/v1/estatisticas")
@@ -66,6 +69,6 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 				.body(bytesPdf);
 	}
 	
-	
+	@Schema(implementation = EstatisticasModelOpenApi.class)
 	public static class EstatisticasModel extends RepresentationModel<EstatisticasModel> {}
 }
