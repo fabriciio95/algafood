@@ -53,6 +53,7 @@ public class SpringDocConfig {
 	private static final String NOT_ACCEPTABLE_RESPONSE = "NotAcceptable";
 	private static final String INTERNAL_SERVER_RESPONSE = "InternalServerError";
 	private static final String BAD_REQUEST_RESPONSE = "BadRequestResponse";
+	private static final String FORBIDDEN_RESPONSE = "ForbiddenResponse";
 
 	@Bean
 	OpenAPI openAPI() {
@@ -78,7 +79,8 @@ public class SpringDocConfig {
 						 new Tag().name("Estados").description("Gerencia os estados"),
 						 new Tag().name("Produtos").description("Gerencia os produtos"),
 						 new Tag().name("Usuários").description("Gerencia os usuários"),
-						 new Tag().name("Estatísticas").description("Estatísticas da Algafood")
+						 new Tag().name("Estatísticas").description("Estatísticas da Algafood"),
+						 new Tag().name("Permissões").description("Gerencia as permissões")
 				 )).components(new Components()
 						 .schemas(gerarSchemas())
 						 .responses(gerarResponses())
@@ -98,18 +100,22 @@ public class SpringDocConfig {
 			        			   	  case GET:
 			        			   		  responses.addApiResponse("406", new ApiResponse().$ref(NOT_ACCEPTABLE_RESPONSE));
 			        			   		  responses.addApiResponse("500", new ApiResponse().$ref(INTERNAL_SERVER_RESPONSE));
+			        			   		  responses.addApiResponse("403", new ApiResponse().$ref(FORBIDDEN_RESPONSE));
 			        			   		  break;
 			        			   	  case POST:
 			        			   		  responses.addApiResponse("400", new ApiResponse().$ref(BAD_REQUEST_RESPONSE));
 			        			   		  responses.addApiResponse("500", new ApiResponse().$ref(INTERNAL_SERVER_RESPONSE));
+			        			   		  responses.addApiResponse("403", new ApiResponse().$ref(FORBIDDEN_RESPONSE));
 			        			   		  break;
 			        			   	  case PATCH:
 			        			   	  case PUT:
 			        			   		  responses.addApiResponse("400", new ApiResponse().$ref(BAD_REQUEST_RESPONSE));
 			        			   		  responses.addApiResponse("500", new ApiResponse().$ref(INTERNAL_SERVER_RESPONSE));
+			        			   		  responses.addApiResponse("403", new ApiResponse().$ref(FORBIDDEN_RESPONSE));
 			        			   		  break;
 			        			   	 case DELETE:
 			        			   		  responses.addApiResponse("500", new ApiResponse().$ref(INTERNAL_SERVER_RESPONSE));
+			        			   		  responses.addApiResponse("403", new ApiResponse().$ref(FORBIDDEN_RESPONSE));
 			        			   		  break;
 			        			   	default:
 			        			   		break;
@@ -152,6 +158,10 @@ public class SpringDocConfig {
 		
 		apiResponseMap.put(NOT_ACCEPTABLE_RESPONSE, new ApiResponse()
 				.description("Recurso não possui representação que poderia ser aceita pelo consumidor")
+				.content(content));
+		
+		apiResponseMap.put(FORBIDDEN_RESPONSE, new ApiResponse()
+				.description("Acesso negado")
 				.content(content));
 		
 		return apiResponseMap;
