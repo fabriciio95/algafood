@@ -1,9 +1,10 @@
 const config = {
   clientId: "foodanalytics",
   clientSecret: "web123",
-  authorizeUrl: "http://api.algafood.local:8080/oauth/authorize",
-  tokenUrl: "http://api.algafood.local:8080/oauth/token",
-  callbackUrl: "http://localhost:8082",
+  authorizeUrl: "http://api.algafood.local:8080/oauth2/authorize",
+  scope: "READ WRITE",
+  tokenUrl: "http://api.algafood.local:8080/oauth2/token",
+  callbackUrl: "http://127.0.0.1:8082",
   cozinhasUrl: "http://api.algafood.local:8080/v1/cozinhas"
 };
 
@@ -97,7 +98,7 @@ function login() {
   let codeVerifier = generateCodeVerifier();
   let codeChallenge = generateCodeChallenge(codeVerifier);
 
-  window.location.href = `${config.authorizeUrl}?response_type=code&client_id=${config.clientId}&redirect_uri=${config.callbackUrl}&code_challenge_method=s256&code_challenge=${codeChallenge}`;
+  window.location.href = `${config.authorizeUrl}?response_type=code&client_id=${config.clientId}&redirect_uri=${config.callbackUrl}&scope=${config.scope}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
 }
 
 $(document).ready(function() {

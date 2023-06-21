@@ -81,15 +81,15 @@ public class AuthorizationServerConfig {
 						.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
 						.accessTokenTimeToLive(Duration.ofMinutes(15))
 						.build())
-			    .redirectUri("http://localhost:8082")
-			    .redirectUri("http://localhost:8080/swagger-ui/oauth2-redirect.html")
+			    .redirectUri("http://127.0.0.1:8082")
+			    .redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
 			    .clientSettings(ClientSettings.builder()
 			    		.requireAuthorizationConsent(true)
 			    		.build())
 			    .build();
 				
 		RegisteredClient foodanalytics = RegisteredClient
-				.withId("2")
+				.withId("3")
 				.clientId("foodanalytics")
 				.clientSecret(passwordEncoder.encode("web123"))
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
@@ -100,10 +100,10 @@ public class AuthorizationServerConfig {
 						.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
 						.accessTokenTimeToLive(Duration.ofMinutes(30))
 						.build())
-			    .redirectUri("http://localhost:8082")
-			    .redirectUri("http://localhost:8080/swagger-ui/oauth2-redirect.html")
+			    .redirectUri("http://127.0.0.1:8082")
+			    .redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
 			    .clientSettings(ClientSettings.builder()
-			    		.requireAuthorizationConsent(false)
+			    		.requireAuthorizationConsent(true)
 			    		.build())
 			    .build();
 		
