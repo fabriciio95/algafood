@@ -23,7 +23,7 @@ public class ResourceServerConfig {
 
 	@Bean
 	SecurityFilterChain resourcerServerFilterChain(HttpSecurity http) throws Exception {
-		http.formLogin(Customizer.withDefaults())      
+		http.formLogin(customizer -> customizer.loginPage("/login"))      
 		          .authorizeRequests()
 				  .antMatchers("/oauth2/**").authenticated()
 				  .and()
