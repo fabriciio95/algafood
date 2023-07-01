@@ -17,11 +17,9 @@
 	<properties>
 		<java.version>17</java.version>
 		<modelmapper.version>3.0.0</modelmapper.version>
-		<squiggly.version>1.3.18</squiggly.version>
 		<jasperreports.version>6.20.0</jasperreports.version>
 		<aws-java-sdk-s3.version>1.12.289</aws-java-sdk-s3.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
-		<oauth2-oidc-sdk>6.21.2</oauth2-oidc-sdk>
 		<spring-auth-server.version>0.3.1</spring-auth-server.version>
 		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
 		<springdoc.version>1.6.9</springdoc.version>
@@ -88,12 +86,6 @@
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>${modelmapper.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.github.bohnman</groupId>
-			<artifactId>squiggly-filter-jackson</artifactId>
-			<version>${squiggly.version}</version>
 		</dependency>
 
 		<dependency>
