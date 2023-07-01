@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -88,7 +88,7 @@ public class SpringDocConfig {
 	}
 	
 	@Bean
-	OpenApiCustomiser openApiCustomiser(){
+	OpenApiCustomizer openApiCustomizer(){
 		return openApi -> { 
 			openApi.getPaths()
 			           .values()
