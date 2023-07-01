@@ -6,7 +6,8 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,19 +17,16 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class ResourceServerConfig {
 
 	@Bean
 	SecurityFilterChain resourcerServerFilterChain(HttpSecurity http) throws Exception {
-		http.formLogin(customizer -> customizer.loginPage("/login"))      
-		          .authorizeRequests()
-				  .antMatchers("/oauth2/**").authenticated()
-				  .and()
+		http.formLogin(Customizer.withDefaults())      
 				  .csrf().disable()
 				  .cors()
-				  .and()
+		        .and()
 				  .oauth2ResourceServer()
 				  .jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
 				

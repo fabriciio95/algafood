@@ -33,15 +33,7 @@ import io.swagger.v3.oas.models.tags.Tag;
 @Configuration
 @SecurityScheme(name = "security_auth", 
 	type = SecuritySchemeType.OAUTH2, 
-	flows =  @OAuthFlows(
-	        password = @OAuthFlow(
-	        		authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}",
-	    			tokenUrl = "${springdoc.oAuthFlw.tokenUrl}",
-	    			scopes = {
-	    					@OAuthScope(name = "READ", description = "read scope"),
-	    					@OAuthScope(name = "WRITE", description = "write scope")
-	    			}),
-	        authorizationCode = @OAuthFlow(
+	flows =  @OAuthFlows(authorizationCode = @OAuthFlow(
 	    			authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}",
 	    			tokenUrl = "${springdoc.oAuthFlw.tokenUrl}",
 	    			scopes = {
