@@ -2,7 +2,7 @@ package com.algafood;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
